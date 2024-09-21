@@ -1,0 +1,436 @@
+{
+  "categories": [
+    {
+      "category_id": "C001",
+      "name": "Electronics",
+      "id": "594a"
+    },
+    {
+      "category_id": "C002",
+      "name": "Groceries",
+      "id": "7b2d"
+    },
+    {
+      "category_id": "C003",
+      "name": "Clothing",
+      "id": "1d60"
+    },
+    {
+      "category_id": "C004",
+      "name": "Home Appliances",
+      "id": "91fc"
+    },
+    {
+      "category_id": "C005",
+      "name": "Books",
+      "id": "c662"
+    },
+    {
+      "category_id": "C006",
+      "name": "Toys",
+      "id": "440d"
+    },
+    {
+      "category_id": "C007",
+      "name": "Beauty & Personal Care",
+      "id": "c58a"
+    },
+    {
+      "category_id": "C008",
+      "name": "Furniture",
+      "id": "79b3"
+    }
+  ],
+  "products": [
+    {
+      "product_id": "P001",
+      "name": "Apple iPhone 14",
+      "category_id": "C001",
+      "price": 999.99,
+      "stock_quantity": 50,
+      "supplier": "Apple Inc.",
+      "description": "Latest model with A15 Bionic chip and advanced dual-camera system.",
+      "ean_code": "36026272",
+      "id": "4a3e"
+    },
+    {
+      "product_id": "P002",
+      "name": "Samsung Galaxy S21",
+      "category_id": "C001",
+      "price": 799.99,
+      "stock_quantity": 30,
+      "supplier": "Samsung Electronics",
+      "description": "Flagship smartphone with dynamic AMOLED display and triple-camera setup.",
+      "ean_code": "24946834",
+      "id": "2770"
+    },
+    {
+      "product_id": "P003",
+      "name": "Sony WH-1000XM4 Headphones",
+      "category_id": "C001",
+      "price": 349.99,
+      "stock_quantity": 75,
+      "supplier": "Sony Corporation",
+      "description": "Noise-canceling over-ear headphones with premium sound quality.",
+      "ean_code": "88592305",
+      "id": "8bd5"
+    },
+    {
+      "product_id": "P004",
+      "name": "Dell XPS 13 Laptop",
+      "category_id": "C001",
+      "price": 1199.99,
+      "stock_quantity": 20,
+      "supplier": "Dell Inc.",
+      "description": "13-inch ultrabook with Intel Core i7 processor and 16GB RAM.",
+      "ean_code": "84962003",
+      "id": "05ff"
+    },
+    {
+      "product_id": "P005",
+      "name": "HP Envy Printer",
+      "category_id": "C004",
+      "price": 199.99,
+      "stock_quantity": 40,
+      "supplier": "HP Inc.",
+      "description": "All-in-one wireless printer with mobile printing support.",
+      "ean_code": "18155228",
+      "id": "09c1"
+    },
+    {
+      "product_id": "P006",
+      "name": "Organic Bananas (1kg)",
+      "category_id": "C002",
+      "price": 2.99,
+      "stock_quantity": 100,
+      "supplier": "Fresh Farms",
+      "description": "Certified organic bananas, packed in eco-friendly packaging.",
+      "ean_code": "27704349",
+      "id": "7be5"
+    },
+    {
+      "product_id": "P007",
+      "name": "Whole Wheat Bread",
+      "category_id": "C002",
+      "price": 3.49,
+      "stock_quantity": 60,
+      "supplier": "Bakery Fresh",
+      "description": "Freshly baked whole wheat bread, high in fiber.",
+      "ean_code": "50627974",
+      "id": "5e92"
+    },
+    {
+      "product_id": "P008",
+      "name": "Nestle Milk Chocolate Bar",
+      "category_id": "C002",
+      "price": 1.99,
+      "stock_quantity": 200,
+      "supplier": "Nestle",
+      "description": "Delicious milk chocolate bar with a smooth, creamy texture.",
+      "ean_code": "83374791",
+      "id": "a228"
+    },
+    {
+      "product_id": "P009",
+      "name": "Adidas Running Shoes",
+      "category_id": "C003",
+      "price": 89.99,
+      "stock_quantity": 50,
+      "supplier": "Adidas",
+      "description": "Lightweight running shoes with breathable mesh upper.",
+      "ean_code": "41820919",
+      "id": "aab9"
+    },
+    {
+      "product_id": "P010",
+      "name": "Levi's 501 Jeans",
+      "category_id": "C003",
+      "price": 59.99,
+      "stock_quantity": 40,
+      "supplier": "Levi's",
+      "description": "Classic straight-fit jeans with durable denim fabric.",
+      "ean_code": "46966131",
+      "id": "ea32"
+    },
+    {
+      "product_id": "P011",
+      "name": "Dyson V11 Vacuum Cleaner",
+      "category_id": "C004",
+      "price": 599.99,
+      "stock_quantity": 15,
+      "supplier": "Dyson",
+      "description": "Cordless vacuum cleaner with powerful suction and long battery life.",
+      "ean_code": "84836151",
+      "id": "3744"
+    },
+    {
+      "product_id": "P012",
+      "name": "KitchenAid Stand Mixer",
+      "category_id": "C004",
+      "price": 399.99,
+      "stock_quantity": 25,
+      "supplier": "KitchenAid",
+      "description": "High-performance stand mixer with a variety of attachments.",
+      "ean_code": "13510794",
+      "id": "7063"
+    },
+    {
+      "product_id": "P013",
+      "name": "To Kill a Mockingbird by Harper Lee",
+      "category_id": "C005",
+      "price": 9.99,
+      "stock_quantity": 80,
+      "supplier": "Penguin Books",
+      "description": "Classic novel set in the American South during the 1930s.",
+      "ean_code": "70372830",
+      "id": "1b5e"
+    },
+    {
+      "product_id": "P014",
+      "name": "1984 by George Orwell",
+      "category_id": "C005",
+      "price": 8.99,
+      "stock_quantity": 100,
+      "supplier": "Penguin Books",
+      "description": "Dystopian novel about a totalitarian regime and surveillance.",
+      "ean_code": "18563085",
+      "id": "e0de"
+    },
+    {
+      "product_id": "P015",
+      "name": "LEGO Star Wars Set",
+      "category_id": "C006",
+      "price": 59.99,
+      "stock_quantity": 60,
+      "supplier": "LEGO",
+      "description": "Buildable Star Wars-themed LEGO set with minifigures.",
+      "ean_code": "43556694",
+      "id": "faab"
+    },
+    {
+      "product_id": "P016",
+      "name": "Barbie Dreamhouse",
+      "category_id": "C006",
+      "price": 199.99,
+      "stock_quantity": 20,
+      "supplier": "Mattel",
+      "description": "Large dollhouse with interactive features and accessories.",
+      "ean_code": "94298307",
+      "id": "bc30"
+    },
+    {
+      "product_id": "P017",
+      "name": "Neutrogena Hydro Boost Moisturizer",
+      "category_id": "C007",
+      "price": 19.99,
+      "stock_quantity": 70,
+      "supplier": "Neutrogena",
+      "description": "Hydrating gel-cream moisturizer with hyaluronic acid.",
+      "ean_code": "57133188",
+      "id": "50f9"
+    },
+    {
+      "product_id": "P018",
+      "name": "Dove Body Wash",
+      "category_id": "C007",
+      "price": 5.99,
+      "stock_quantity": 150,
+      "supplier": "Unilever",
+      "description": "Moisturizing body wash with a gentle formula.",
+      "ean_code": "59526551",
+      "id": "d216"
+    },
+    {
+      "product_id": "P019",
+      "name": "Nivea Men Deodorant",
+      "category_id": "C007",
+      "price": 4.99,
+      "stock_quantity": 120,
+      "supplier": "Nivea",
+      "description": "Antiperspirant deodorant with 48-hour protection.",
+      "ean_code": "50955718",
+      "id": "3d99"
+    },
+    {
+      "product_id": "P020",
+      "name": "Ikea Malm Bed Frame",
+      "category_id": "C008",
+      "price": 199.99,
+      "stock_quantity": 15,
+      "supplier": "Ikea",
+      "description": "Queen-size bed frame with storage drawers underneath.",
+      "ean_code": "74493883",
+      "id": "dabd"
+    },
+    {
+      "product_id": "P021",
+      "name": "Sony PlayStation 5",
+      "category_id": "C001",
+      "price": 499.99,
+      "stock_quantity": 25,
+      "supplier": "Sony Corporation",
+      "description": "Next-gen gaming console with ultra-fast loading and stunning visuals.",
+      "ean_code": "16281745",
+      "id": "43e2"
+    },
+    {
+      "product_id": "P022",
+      "name": "Microsoft Xbox Series X",
+      "category_id": "C001",
+      "price": 499.99,
+      "stock_quantity": 30,
+      "supplier": "Microsoft",
+      "description": "Powerful gaming console with 4K resolution and 1TB SSD.",
+      "ean_code": "66014126",
+      "id": "b7e8"
+    },
+    {
+      "product_id": "P023",
+      "name": "Logitech Wireless Mouse",
+      "category_id": "C001",
+      "price": 29.99,
+      "stock_quantity": 80,
+      "supplier": "Logitech",
+      "description": "Ergonomic wireless mouse with long battery life.",
+      "ean_code": "35688242",
+      "id": "f637"
+    },
+    {
+      "product_id": "P024",
+      "name": "Apple MacBook Air",
+      "category_id": "C001",
+      "price": 999.99,
+      "stock_quantity": 20,
+      "supplier": "Apple Inc.",
+      "description": "Lightweight laptop with M1 chip and retina display.",
+      "ean_code": "16749467",
+      "id": "d38f"
+    }
+  ],
+  "customers": [
+    {
+      "customer_id": "CU001",
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "phone": "+123456789",
+      "address": "123 Main St, Anytown, USA",
+      "id": "7d78"
+    },
+    {
+      "customer_id": "CU002",
+      "name": "Jane Smith",
+      "email": "janesmith@example.com",
+      "phone": "+987654321",
+      "address": "456 Elm St, Othertown, USA",
+      "id": "7bd3"
+    }
+  ],
+  "cart": [
+    {
+      "id": "4.865147071597655",
+      "name": "Apple iPhone 14",
+      "price": 3999.96,
+      "quantity": 4,
+      "ean_code": "21945342"
+    },
+    {
+      "id": "7.246306876816505",
+      "name": "Microsoft Xbox Series X",
+      "price": 1499.97,
+      "quantity": 3,
+      "ean_code": "66014126"
+    },
+    {
+      "id": "1.9850210195795814",
+      "name": "Logitech Wireless Mouse",
+      "price": 29.99,
+      "quantity": 1,
+      "ean_code": "35688242"
+    }
+  ],
+  "session": [
+    {
+      "id": "82754",
+      "code": "A97",
+      "method": "Cash",
+      "status": "Not paid",
+      "data": [
+        {
+          "id": "4.865147071597655",
+          "name": "Apple iPhone 14",
+          "price": 3999.96,
+          "quantity": 4,
+          "ean_code": "21945342"
+        },
+        {
+          "id": "2.029245815551765",
+          "name": "Neutrogena Hydro Boost Moisturizer",
+          "price": 119.94,
+          "quantity": 6,
+          "ean_code": "98034215"
+        },
+        {
+          "id": "6.748245271514726",
+          "name": "Nivea Men Deodorant",
+          "price": 39.92,
+          "quantity": 8,
+          "ean_code": "72451069"
+        },
+        {
+          "id": "5.550779606443362",
+          "name": "Sony Alpha Mirrorless Camera",
+          "price": 7999.92,
+          "quantity": 8,
+          "ean_code": "62107358"
+        }
+      ]
+    },
+    {
+      "id": "80627",
+      "code": "M14",
+      "method": "Transfer",
+      "status": "Not paid",
+      "data": [
+        {
+          "id": "4.865147071597655",
+          "name": "Apple iPhone 14",
+          "price": 3999.96,
+          "quantity": 4,
+          "ean_code": "21945342"
+        },
+        {
+          "id": "7.246306876816505",
+          "name": "Microsoft Xbox Series X",
+          "price": 1499.97,
+          "quantity": 3,
+          "ean_code": "66014126"
+        },
+        {
+          "id": "1.9850210195795814",
+          "name": "Logitech Wireless Mouse",
+          "price": 29.99,
+          "quantity": 1,
+          "ean_code": "35688242"
+        }
+      ]
+    }
+  ],
+  "employees": [
+    {
+      "employee_id": "E001",
+      "name": "Alice Johnson",
+      "position": "Store Manager",
+      "email": "alice.johnson@spar.com",
+      "phone": "+123456789",
+      "id": "a148"
+    },
+    {
+      "employee_id": "E002",
+      "name": "Bob Williams",
+      "position": "Sales Associate",
+      "email": "bob.williams@spar.com",
+      "phone": "+987654321",
+      "id": "e703"
+    }
+  ]
+}

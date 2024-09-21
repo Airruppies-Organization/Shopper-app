@@ -1,0 +1,6 @@
+{
+  "replaceAttrValues": {
+    "fill-current": "{props.fill}",
+    "strroke-current": "{props.stroke}"
+  }
+}
