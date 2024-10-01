@@ -20,14 +20,14 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response = await fetch(`${baseURL}/cart`);
+      const response = await fetch(`${baseURL}/api/cartData`);
 
       const result = await response.json();
 
       setCart(result);
     };
     fetcher();
-  }, [cart]);
+  }, []);
 
   // handler for when the barcode has been scanned
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -37,7 +37,7 @@ export const ContextProvider = ({ children }) => {
 
     try {
       // Fetch product information based on the scanned barcode (EAN code)
-      const response = await fetch(`${baseURL}/products?ean_code=${data}`);
+      const response = await fetch(`${baseURL}/api/product?ean_code=${data}`);
 
       // Check if the response is okay
       if (!response.ok) {
@@ -46,8 +46,8 @@ export const ContextProvider = ({ children }) => {
 
       const productData = await response.json();
 
-      if (productData[0]) {
-        setProd(productData[0]);
+      if (productData) {
+        setProd(productData);
         setPop(true);
         setScanned(true);
       } else {
@@ -65,11 +65,11 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  const cartAction = async (name, item) => {
+  const cartAction = async (item) => {
     const product = cart.find((prod) => prod.name === item);
 
     if (!product) {
-      const response = await fetch(`${baseURL}/cart`, {
+      const response = await fetch(`${baseURL}/api/cartData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,12 +98,6 @@ export const ContextProvider = ({ children }) => {
 
       setPop(false);
       setScanned(false);
-
-      if (name === "toView") {
-        setView(false);
-        router.push("cart");
-      }
-
       setQty(1);
     } else {
       showMessage({
@@ -157,7 +151,7 @@ export const ContextProvider = ({ children }) => {
     const alpha = String.fromCharCode(Math.round(Math.random() * 25 + 65));
     const numa = Math.round(Math.random() * 100);
 
-    const response = await fetch(`${baseURL}/session`, {
+    const response = await fetch(`${baseURL}/api/sessionData`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -184,13 +178,13 @@ export const ContextProvider = ({ children }) => {
   };
 
   const cartDelete = async (id) => {
-    const response = await fetch(`${baseURL}/cart/${id}`, {
+    const response = await fetch(`${baseURL}/api/cartData/${id}`, {
       method: "DELETE",
     });
 
-    await response.json();
+    const result = await response.json();
 
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    setCart(cart.filter((item) => item._id !== result._id));
   };
 
   return (
@@ -205,11 +199,11 @@ export const ContextProvider = ({ children }) => {
         prod,
         setProd,
         handleBarCodeScanned,
-        cartAction,
         cartDelete,
         cart,
         setCart,
         cart,
+        cartAction,
         setCart,
         qty,
         setQty,

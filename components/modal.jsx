@@ -39,7 +39,7 @@ const QtyModal = () => {
       onRequestClose={closeModal}
     >
       <View className="w-full h-full flex justify-end bg-opacity-0">
-        <View className="bg-primary w-full h-80 mx-auto p-4">
+        <View className="bg-primary w-full h-60 mx-auto p-4">
           <View className="flex flex-row w-full justify-between items-center mb-4">
             <Text className="text-lg">Specify Quantity</Text>
             <Pressable onPress={() => closeModal()}>
@@ -79,13 +79,7 @@ const QtyModal = () => {
           </View>
           <View>
             <Pressable
-              onPress={() => cartAction("toView", prod.name)}
-              className="h-14 w-full rounded-lg mb-2 border-2 border-secondary flex items-center justify-center"
-            >
-              <Text className="text-secondary font-bold">View Cart</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => cartAction("toCart", prod.name)}
+              onPress={() => cartAction(prod.name)}
               className="h-14 w-full rounded-lg mb-4 bg-secondary flex items-center justify-center"
             >
               <Text className="text-text-white font-bold"> Add to Cart</Text>
