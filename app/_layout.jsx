@@ -32,6 +32,7 @@ export default function App() {
             <Stack.Screen name="index" />
             <Stack.Screen name="(screen)" />
             <Stack.Screen name="(page)" />
+            <Stack.Screen name="(login)" />
           </Stack>
         </SafeAreaView>
       </ContextProvider>

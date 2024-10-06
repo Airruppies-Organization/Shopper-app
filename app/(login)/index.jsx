@@ -4,7 +4,7 @@ import Input from "../../components/input";
 import Submit from "../../components/submit";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Register = () => {
+const Login = () => {
   const [login, setLogin] = useState({
     email: "",
     password: "",
@@ -28,7 +28,7 @@ const Register = () => {
             handleChange={(e) => setLogin({ ...login, password: e })}
           />
 
-          <Submit value="Login" />
+          <Submit value="Submit" to={"/dashboard"} />
           <View className="w-full flex items-end mt-3">
             <Text className="text-secondary">Forgot Password</Text>
           </View>
@@ -38,4 +38,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

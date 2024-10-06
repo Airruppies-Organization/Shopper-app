@@ -1,14 +1,12 @@
-import { Tabs, Redirect } from "expo-router";
-import Dashboard from "../(page)/dashboard";
+import React from "react";
+import { Stack } from "expo-router";
 
-const TabLayout = () => {
+const ScreenLayout = () => {
   return (
-    <>
-      <Tabs>
-        <Tabs.Screen name="home" component={Dashboard} />
-      </Tabs>
-    </>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+    </Stack>
   );
 };
 
-export default TabLayout;
+export default ScreenLayout;
