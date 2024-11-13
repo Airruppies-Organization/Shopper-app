@@ -1,12 +1,18 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 
-const Sub = ({ label, icon }) => {
+const Sub = ({ label, icon, to }) => {
   return (
-    <View className="border-[2px] border-spacing-1 w-[48%] p-2 h-14 flex flex-row items-center border-secondary rounded-lg">
-      <View className="mr-2">{icon}</View>
-      <Text className="text-secondary text-sm">{label}</Text>
-    </View>
+    <Pressable
+      onPress={() => router.push(to)}
+      className="border-[2px] border-spacing-1 w-[48%] p-2 h-14 border-secondary rounded-lg"
+    >
+      <View className="flex flex-row items-center h-full">
+        <View className="mr-2">{icon}</View>
+        <Text className="text-secondary text-sm">{label}</Text>
+      </View>
+    </Pressable>
   );
 };
 

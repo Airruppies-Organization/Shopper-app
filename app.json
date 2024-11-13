@@ -13,9 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
+      "newArchEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -37,7 +39,7 @@
       ]
     ],
     "extra": {
-      "baseURL": "http://192.168.242.27:7000"
+      "baseURL": "http://192.168.155.27:7000"
     }
   }
 }

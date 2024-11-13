@@ -24,6 +24,7 @@ const PageLayout = () => {
             paddingBottom: 10,
             paddingTop: 10,
           },
+          pressColor: "#ffffff",
         }}
       >
         <Tabs.Screen
@@ -42,7 +43,7 @@ const PageLayout = () => {
             ),
             tabBarLabel: ({ focused }) => (
               <Text
-                className="text-[10px]"
+                className="text-[10px] mt-1"
                 style={{ color: focused ? "#61088E" : "#000000" }}
               >
                 Dashboard
@@ -66,7 +67,7 @@ const PageLayout = () => {
             ),
             tabBarLabel: ({ focused }) => (
               <Text
-                className="text-[10px]"
+                className="text-[10px] mt-1"
                 style={{ color: focused ? "#61088E" : "#000000" }}
               >
                 Scan
@@ -97,7 +98,7 @@ const PageLayout = () => {
             ),
             tabBarLabel: ({ focused }) => (
               <Text
-                className="text-[10px]"
+                className="text-[10px] mt-1"
                 style={{ color: focused ? "#61088E" : "#000000" }}
               >
                 Cart
@@ -121,7 +122,7 @@ const PageLayout = () => {
             ),
             tabBarLabel: ({ focused }) => (
               <Text
-                className="text-[10px]"
+                className="text-[10px] mt-1"
                 style={{ color: focused ? "#61088E" : "#000000" }}
               >
                 Settings

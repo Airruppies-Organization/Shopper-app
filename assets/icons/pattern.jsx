@@ -1,9 +1,9 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-const Pattern = ({ stroke = "#000000", ...props }) => (
+const Pattern = ({ width, height, stroke = "#000000", ...props }) => (
   <Svg
-    // width="100%"
-    // height="100%"
+    width={width}
+    height={height}
     preserveAspectRatio="none"
     viewBox="0 0 609 346"
     fill="none"

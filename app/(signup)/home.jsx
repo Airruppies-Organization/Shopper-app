@@ -9,6 +9,10 @@ import React from "react";
 import Social from "../../components/social";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Google from "../../assets/icons/google";
+import Yahoo from "../../assets/icons/yahoo";
+import Outlook from "../../assets/icons/microsoft-outlook";
+import Apple from "../../assets/icons/apple";
 
 const Home = () => {
   return (
@@ -34,10 +38,10 @@ const Home = () => {
           </View>
 
           <View className="h-64 flex w-full items-center justify-between">
-            <Social label="Continue with Google" />
-            <Social label="Continue with Yahoo!" />
-            <Social label="Continue with Outlook" />
-            <Social label="Continue with iPhone" />
+            <Social icon={<Google />} label="Continue with Google" />
+            <Social icon={<Yahoo />} label="Continue with Yahoo!" />
+            <Social icon={<Outlook />} label="Continue with Outlook" />
+            <Social icon={<Apple />} label="Continue with iPhone" />
           </View>
 
           <View className="my-2 h-8 flex flex-row w-full items-center">

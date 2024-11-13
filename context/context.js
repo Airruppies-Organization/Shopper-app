@@ -13,6 +13,88 @@ export const ContextProvider = ({ children }) => {
   const [qty, setQty] = useState(1);
   const [cart, setCart] = useState([]);
   const [session, setSession] = useState({});
+  const [currOrder, setCurrOrder] = useState({});
+  const [orders, setOrders] = useState([
+    {
+      order_id: "WEQ43242",
+      timestamp: 423423432,
+      user_id: "23jkl2jkl23k23jkl23jk23",
+      total: 30000,
+      items: [
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+      ],
+
+      status: "Cancelled",
+      paymentMethod: "Cash",
+      code: "M33",
+      ref_id: "rjwejkl2j332jk32",
+    },
+    {
+      order_id: "WEQ43241",
+      timestamp: 423423432,
+      user_id: "23jkl2jkl23k23jkl23jk23",
+      total: 30000,
+      items: [
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+      ],
+      status: "Successful",
+      paymentMethod: "Cash",
+      code: "P33",
+      ref_id: "rjwejkl2j332jk32",
+    },
+    {
+      order_id: "WEQ43243",
+      timestamp: 423423432,
+      user_id: "23jkl2jkl23k23jkl23jk23",
+      total: 30000,
+      items: [
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+        {
+          name: "Bottle milk",
+          quantity: 1,
+          ean_code: 32423232,
+          id: "rjekl23jj32jl",
+          price: 40000,
+        },
+      ],
+      status: "Successful",
+      paymentMethod: "Cash",
+      code: "M78",
+      ref_id: "rjwejkl2j332jk32 ",
+    },
+  ]);
 
   const router = useRouter();
   const extra = Constants.expoConfig?.extra;
@@ -211,6 +293,10 @@ export const ContextProvider = ({ children }) => {
         payType,
         session,
         setSession,
+        orders,
+        setOrders,
+        currOrder,
+        setCurrOrder,
       }}
     >
       {children}

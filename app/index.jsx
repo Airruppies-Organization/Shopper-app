@@ -1,26 +1,30 @@
 import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { setStatusBarHidden, StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
+import Pattern from "../assets/icons/pattern";
+import Logo from "../assets/icons/fullLogo.jsx";
 
 export default function App() {
+  setTimeout(() => {
+    router.push("/home");
+  }, 3500);
   return (
-    <View className="flex items-center justify-center h-full">
-      <Text className="text-red-500 font-bold text-black">Locco</Text>
-      <View>
-        <Text
-          onPress={() => router.push("/(signup)/home")}
-          className=" bg-secondary text-primary rounded-md px-5 py-2"
-        >
-          REGISTER
-        </Text>
-        <Text
-          onPress={() => router.push("/login")}
-          className=" bg-secondary text-primary rounded-md px-5 py-2 mt-7"
-        >
-          Login
-        </Text>
-      </View>
-      <StatusBar style="auto" />
+    <View className="flex items-center justify-center h-full overflow-auto bg-secondary bg-opacity-5">
+      <Pattern
+        height={800}
+        width={800}
+        stroke="white"
+        className="absolute opacity-50"
+      />
+      <Logo
+        mainColor={"#ffffff"}
+        subColor={"#000000"}
+        textColor={"#ffffff"}
+        height={180}
+        width={180}
+      />
+
+      <StatusBar barStyle="light-content" />
     </View>
   );
 }

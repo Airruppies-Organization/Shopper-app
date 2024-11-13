@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import React from "react";
 import Header from "../../pageComponents/header";
 import WalletCard from "../../pageComponents/walletCard";
@@ -46,7 +46,12 @@ const Dashboard = () => {
         <WalletCard />
         <View className="flex flex-row justify-between w-full mt-4">
           <Sub label="Find Stores" icon={<Store color="#61088E" />} />
-          <Sub label="Order History" icon={<History color="#61088E" />} />
+
+          <Sub
+            label="Order History"
+            icon={<History color="#61088E" />}
+            to="/orders"
+          />
         </View>
         <View className="flex flex-row items-center">
           <View className="mr-5 w-16 h-14 flex flex-col justify-center items-center">

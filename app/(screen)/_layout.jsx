@@ -8,6 +8,7 @@ const ScreenLayout = () => {
       <Stack.Screen name="upSlider" />
       <Stack.Screen name="verify" />
       <Stack.Screen name="summary" />
+      {/* <Stack.Screen name="orders/[order_id].jsx/index" /> */}
     </Stack>
   );
 };
