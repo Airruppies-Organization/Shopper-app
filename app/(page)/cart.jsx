@@ -6,7 +6,6 @@ import { AppContext } from "../../context/context";
 
 const Cart = () => {
   const { cart, setCart } = useContext(AppContext);
-
   return (
     <ScrollView>
       <View className="h-full pt-16 relative bg-primary">
@@ -14,7 +13,7 @@ const Cart = () => {
           <Text className="text-3xl mb-5">View Cart</Text>
           <CartSub />
           <View className="mt-5">
-            {cart.map((item) => {
+            {cart?.map((item) => {
               return (
                 <Product
                   id={item._id}

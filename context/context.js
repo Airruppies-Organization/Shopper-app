@@ -1,11 +1,28 @@
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "expo-router";
+import { usePathname } from "expo-router";
 import { showMessage } from "react-native-flash-message";
 import Constants from "expo-constants";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export const AppContext = createContext();
 
 export const ContextProvider = ({ children }) => {
+  //  --- AUTH FIELD ---
+  const [registration, setRegistration] = useState({
+    username: "",
+    email: "",
+    phoneNo: "",
+    password: "",
+    confirm: "",
+  });
+
+  const [signin, setSignin] = useState({
+    email: "",
+    password: "",
+  });
+
+  // --- OTHER STATES ---
   const [scanned, setScanned] = useState(false);
   const [view, setView] = useState(false);
   const [pop, setPop] = useState(false);
@@ -14,102 +31,67 @@ export const ContextProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [session, setSession] = useState({});
   const [currOrder, setCurrOrder] = useState({});
-  const [orders, setOrders] = useState([
-    {
-      order_id: "WEQ43242",
-      timestamp: 423423432,
-      user_id: "23jkl2jkl23k23jkl23jk23",
-      total: 30000,
-      items: [
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-      ],
-
-      status: "Cancelled",
-      paymentMethod: "Cash",
-      code: "M33",
-      ref_id: "rjwejkl2j332jk32",
-    },
-    {
-      order_id: "WEQ43241",
-      timestamp: 423423432,
-      user_id: "23jkl2jkl23k23jkl23jk23",
-      total: 30000,
-      items: [
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-      ],
-      status: "Successful",
-      paymentMethod: "Cash",
-      code: "P33",
-      ref_id: "rjwejkl2j332jk32",
-    },
-    {
-      order_id: "WEQ43243",
-      timestamp: 423423432,
-      user_id: "23jkl2jkl23k23jkl23jk23",
-      total: 30000,
-      items: [
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-        {
-          name: "Bottle milk",
-          quantity: 1,
-          ean_code: 32423232,
-          id: "rjekl23jj32jl",
-          price: 40000,
-        },
-      ],
-      status: "Successful",
-      paymentMethod: "Cash",
-      code: "M78",
-      ref_id: "rjwejkl2j332jk32 ",
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [profile, setProfile] = useState({});
 
   const router = useRouter();
+  const { user } = useAuthContext();
   const extra = Constants.expoConfig?.extra;
   const baseURL = extra.baseURL;
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname.includes("/home") && user) {
+      router.push("/dashboard");
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const fetcher = async () => {
-      const response = await fetch(`${baseURL}/api/cartData`);
+      setCart([]);
+      if (user) {
+        const response = await fetch(`${baseURL}/api/cartData`, {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        });
+        const result = await response.json();
 
-      const result = await response.json();
-
-      setCart(result);
+        setCart(result);
+      }
     };
     fetcher();
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    const fetcher = async () => {
+      const response = await fetch(`${baseURL}/api/orders`, {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      });
+
+      const result = await response.json();
+      setOrders((prev) => [...prev, ...result]);
+    };
+
+    fetcher();
+  }, [user]);
+
+  useEffect(() => {
+    const fetcher = async () => {
+      if (user) {
+        const response = await fetch(`${baseURL}/api/profile`, {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        });
+        const result = await response.json();
+        setProfile(result);
+      }
+    };
+    fetcher();
+  }, [user]);
 
   // handler for when the barcode has been scanned
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -119,7 +101,11 @@ export const ContextProvider = ({ children }) => {
 
     try {
       // Fetch product information based on the scanned barcode (EAN code)
-      const response = await fetch(`${baseURL}/api/product?ean_code=${data}`);
+      const response = await fetch(`${baseURL}/api/product?ean_code=${data}`, {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      });
 
       // Check if the response is okay
       if (!response.ok) {
@@ -155,6 +141,7 @@ export const ContextProvider = ({ children }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
           id: String(Math.random() * 10),
@@ -210,6 +197,7 @@ export const ContextProvider = ({ children }) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${user.token}`,
       },
       body: JSON.stringify({
         ...product,
@@ -237,6 +225,7 @@ export const ContextProvider = ({ children }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${user.token}`,
       },
       body: JSON.stringify({
         code: `${alpha}${numa}`,
@@ -247,7 +236,24 @@ export const ContextProvider = ({ children }) => {
       }),
     });
 
+    const orderResponse = await fetch(`${baseURL}/api/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
+        code: `${alpha}${numa}`,
+        id: String(Math.round(Math.random() * 100000)),
+        method: type,
+        status: type === "Wallet" ? "Paid" : "Not paid",
+        data: [...cart],
+        total: cart.reduce((a, b) => a + b.price, 0),
+      }),
+    });
+
     await response.json();
+    await orderResponse.json();
 
     setSession({
       code: `${alpha}${numa}`,
@@ -256,12 +262,17 @@ export const ContextProvider = ({ children }) => {
       status: type === "Wallet" ? "Paid" : "Not paid",
     });
 
+    setOrders(orderResponse);
     router.push("summary");
   };
 
   const cartDelete = async (id) => {
     const response = await fetch(`${baseURL}/api/cartData/${id}`, {
       method: "DELETE",
+
+      headers: {
+        authorization: `Bearer ${user.token}`,
+      },
     });
 
     const result = await response.json();
@@ -297,6 +308,12 @@ export const ContextProvider = ({ children }) => {
         setOrders,
         currOrder,
         setCurrOrder,
+        registration,
+        setRegistration,
+        signin,
+        setSignin,
+        profile,
+        setProfile,
       }}
     >
       {children}

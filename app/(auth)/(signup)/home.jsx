@@ -6,13 +6,13 @@ import {
   Pressable,
 } from "react-native";
 import React from "react";
-import Social from "../../components/social";
+import Social from "../../../components/social";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Google from "../../assets/icons/google";
-import Yahoo from "../../assets/icons/yahoo";
-import Outlook from "../../assets/icons/microsoft-outlook";
-import Apple from "../../assets/icons/apple";
+import Google from "../../../assets/icons/google";
+import Yahoo from "../../../assets/icons/yahoo";
+import Outlook from "../../../assets/icons/microsoft-outlook";
+import Apple from "../../../assets/icons/apple";
 
 const Home = () => {
   return (
@@ -53,7 +53,7 @@ const Home = () => {
           </View>
 
           <Pressable
-            onPress={() => router.push("/login")}
+            onPress={() => router.push("/(login)")}
             className="w-full border-[0.5px] border-black flex justify-center items-center h-12 rounded-lg"
           >
             <Text className="text-text-black">Login here</Text>

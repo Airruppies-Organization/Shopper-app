@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "react-native";
 import { ContextProvider } from "../context/context";
+import { UserContext } from "../context/userContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,18 +26,20 @@ export default function App() {
   if (!fontsLoaded) return null;
   return (
     <>
-      <ContextProvider>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar barStyle="light-content" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(screen)" />
-            <Stack.Screen name="(page)" />
-            {/* <Stack.Screen name="(signup)" />
+      <UserContext>
+        <ContextProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar barStyle="light-content" />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(screen)" />
+              <Stack.Screen name="(page)" />
+              {/* <Stack.Screen name="(signup)" />
             <Stack.Screen name="(login)" /> */}
-          </Stack>
-        </SafeAreaView>
-      </ContextProvider>
+            </Stack>
+          </SafeAreaView>
+        </ContextProvider>
+      </UserContext>
     </>
   );
 }

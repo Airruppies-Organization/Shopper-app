@@ -13,16 +13,16 @@ const Orders = () => {
           <Text className="text-3xl mb-5">Order history</Text>
 
           <View className="mt-5">
-            {orders.map((item, index) => {
+            {orders?.map((item, index) => {
               return (
                 <OrderSession
                   key={index}
-                  order_id={item.order_id}
+                  id={item.id}
                   code={item.code}
                   status={item.status}
                   timestamp={item.timestamp}
                   ref_id={item.ref_id}
-                  paymentMethod={item.paymentMethod}
+                  paymentMethod={item.method}
                   total={item.total}
                 />
               );

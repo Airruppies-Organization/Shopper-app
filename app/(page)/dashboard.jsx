@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../../pageComponents/header";
 import WalletCard from "../../pageComponents/walletCard";
 import { Image } from "react-native";
@@ -10,8 +10,10 @@ import History from "../../assets/icons/history";
 import Store from "../../assets/icons/store";
 import Faq from "../../assets/icons/faq";
 import Contact from "../../assets/icons/contact";
+import { AppContext } from "../../context/context";
 
 const Dashboard = () => {
+  const { profile } = useContext(AppContext);
   const stores = [
     {
       img: Hometown,
@@ -42,7 +44,7 @@ const Dashboard = () => {
     <ScrollView>
       <View className="bg-primary h-full px-4">
         <Header />
-        <Text>Hi Victor!</Text>
+        <Text>Hi {profile?.username}!</Text>
         <WalletCard />
         <View className="flex flex-row justify-between w-full mt-4">
           <Sub label="Find Stores" icon={<Store color="#61088E" />} />

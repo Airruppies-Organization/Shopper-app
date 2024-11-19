@@ -5,7 +5,7 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../context/context";
 
 const OrderSession = ({
-  order_id,
+  id,
   code,
   total,
   status,
@@ -16,9 +16,10 @@ const OrderSession = ({
   const { setCurrOrder, orders, currOrder } = useContext(AppContext);
 
   const detailHandler = () => {
-    setCurrOrder(() => orders.find((item) => item.order_id === order_id));
+    setCurrOrder(() => orders.find((item) => item.id === id));
+    console.log(currOrder);
 
-    router.push(`/(screen)/orders/${order_id}`);
+    router.push(`/(screen)/orders/${id}`);
   };
 
   return (
@@ -26,7 +27,7 @@ const OrderSession = ({
       <View className="flex flex-row justify-between w-full">
         <View className="flex flex-col justify-between w-32">
           <Text className="text-xs font-sansation font-sLight leading-[13px]">
-            {order_id}
+            {id}
           </Text>
 
           <View className="leading-snug">

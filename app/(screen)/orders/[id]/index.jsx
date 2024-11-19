@@ -8,7 +8,30 @@ import OrderItem from "./orderItem";
 
 const OrderDetails = () => {
   const { currOrder } = useContext(AppContext);
-  const { order_id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
+
+  const dateObject = new Date(currOrder.createdAt);
+
+  function getOrdinalDay(day) {
+    if (day > 3 && day < 21) return day + "th"; // Special case for 11th-13th
+    switch (day % 10) {
+      case 1:
+        return day + "st";
+      case 2:
+        return day + "nd";
+      case 3:
+        return day + "rd";
+      default:
+        return day + "th";
+    }
+  }
+
+  // Extract date components
+  const day = getOrdinalDay(dateObject.getUTCDate());
+  const month = dateObject
+    .toLocaleString("default", { month: "long" })
+    .slice(0, 3); // Full month name
+  const year = dateObject.getUTCFullYear();
 
   return (
     <ScrollView>
@@ -16,7 +39,7 @@ const OrderDetails = () => {
         <View>
           <View className="flex flex-row justify-between mt-3 pb-3 px-5 border-[0.1px] items-center">
             <View>
-              <Text className="text-xl font-sbold">#{order_id}</Text>
+              <Text className="text-xl font-sbold">#{id}</Text>
               <Text className="text-xs font-sregular">Order detail</Text>
             </View>
 
@@ -32,11 +55,11 @@ const OrderDetails = () => {
             <View className="w-full px-10 flex justify-between">
               <View className="my-2 flex flex-row justify-between">
                 <Text>Created at:</Text>
-                <Text>{currOrder.timestamp}</Text>
+                <Text>{`${day} ${month}, ${year}`}</Text>
               </View>
               <View className="my-2 flex flex-row justify-between">
                 <Text>Payment method:</Text>
-                <Text>{currOrder.paymentMethod}</Text>
+                <Text>{currOrder.method}</Text>
               </View>
               <View className="my-2 flex flex-row justify-between">
                 <Text>Status:</Text>
@@ -62,7 +85,7 @@ const OrderDetails = () => {
               <Text className="text-xl font-sregular">Order items</Text>
             </View>
             <View>
-              {currOrder.items?.map((item) => {
+              {currOrder.data?.map((item) => {
                 return (
                   <OrderItem
                     name={item.name}
