@@ -2,7 +2,7 @@
   "expo": {
     "name": "Airruppies",
     "slug": "Airruppies",
-    "scheme": "Airruppies",
+    "scheme": "airruppies",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -36,10 +36,16 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+        }
       ]
     ],
     "extra": {
-      "baseURL": "http://192.168.212.27:7000"
+      "baseURL": "http://192.168.223.27:7000"
     }
   }
 }

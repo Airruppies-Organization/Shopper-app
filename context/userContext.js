@@ -1,5 +1,4 @@
 import { useReducer, createContext, useEffect } from "react";
-import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 
 export const AuthContext = createContext();

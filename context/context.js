@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { usePathname } from "expo-router";
 import { showMessage } from "react-native-flash-message";
 import Constants from "expo-constants";
+import * as SecureStore from "expo-secure-store";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 export const AppContext = createContext();
@@ -33,6 +34,7 @@ export const ContextProvider = ({ children }) => {
   const [currOrder, setCurrOrder] = useState({});
   const [orders, setOrders] = useState([]);
   const [profile, setProfile] = useState({});
+  const [tokenstatus, setTokenStatus] = useState(null);
 
   const router = useRouter();
   const { user } = useAuthContext();
@@ -41,10 +43,27 @@ export const ContextProvider = ({ children }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname.includes("/home") && user) {
+    const verifier = async () => {
+      if (user) {
+        const response = await fetch(
+          `${baseURL}/api/verifyToken?${user.token}`,
+          {
+            headers: {
+              authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+        const result = response.status;
+        setTokenStatus(result);
+      }
+    };
+
+    verifier();
+    if (pathname.includes("/home") && user && tokenstatus === 200) {
+      // console.log(user);
       router.push("/dashboard");
     }
-  }, [pathname]);
+  }, [pathname, user]);
 
   useEffect(() => {
     const fetcher = async () => {
@@ -65,14 +84,16 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const fetcher = async () => {
-      const response = await fetch(`${baseURL}/api/orders`, {
-        headers: {
-          authorization: `Bearer ${user.token}`,
-        },
-      });
+      if (user) {
+        const response = await fetch(`${baseURL}/api/orders`, {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        });
 
-      const result = await response.json();
-      setOrders((prev) => [...prev, ...result]);
+        const result = await response.json();
+        setOrders(result);
+      }
     };
 
     fetcher();

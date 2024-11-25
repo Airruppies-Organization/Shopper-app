@@ -17,7 +17,7 @@ const OrderSession = ({
 
   const detailHandler = () => {
     setCurrOrder(() => orders.find((item) => item.id === id));
-    console.log(currOrder);
+    
 
     router.push(`/(screen)/orders/${id}`);
   };
