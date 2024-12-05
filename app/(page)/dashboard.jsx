@@ -47,7 +47,11 @@ const Dashboard = () => {
         <Text>Hi {profile?.username}!</Text>
         <WalletCard />
         <View className="flex flex-row justify-between w-full mt-4">
-          <Sub label="Find Stores" icon={<Store color="#61088E" />} />
+          <Sub
+            label="Find Stores"
+            icon={<Store color="#61088E" />}
+            to="/mapView"
+          />
 
           <Sub
             label="Order History"
