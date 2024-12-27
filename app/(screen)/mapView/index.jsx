@@ -1,85 +1,126 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import LocMarker from "../../../assets/icons/marker";
+import EnterStore from "./enterModal";
+import { useContext } from "react";
+import { AppContext } from "../../../context/context";
 
 const MapScreen = () => {
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [region, setRegion] = useState(null);
-  const [locations, setLocations] = useState([
-    { id: "1", name: "Sabo market", latitude: 6.50408, longitude: 3.3756 },
-    { id: "2", name: "Ikeja Airport", latitude: 6.573, longitude: 3.3193 },
-    { id: "3", name: "Maryland Mall", latitude: 6.5674, longitude: 3.3669 },
-  ]);
+  const [routeCoordinates, setRouteCoordinates] = useState([]); // Stores route polyline coordinates
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const mapStyle = [
-    {
-      featureType: "poi",
-      stylers: [{ visibility: "off" }], // Hides points of interest
-    },
-    {
-      featureType: "transit",
-      stylers: [{ visibility: "on" }], // Hides transit icons
-    },
-    {
-      featureType: "road",
-      elementType: "labels",
-      stylers: [{ visibility: "on" }], // Hides road labels
-    },
-    {
-      featureType: "administrative",
-      stylers: [{ visibility: "off" }], // Hides administrative labels
-    },
-  ];
+  const { merch, setCurrMerch, currMerch } = useContext(AppContext);
 
+  const googleMapsApiKey = "AIzaSyA1RLkDXGSPHhgPoFcvm1PqGFd5XopuT6o";
+
+  // Fetch the current location of the user
   useEffect(() => {
     const fetchLocation = async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-          console.error("Permission to access location was denied");
-          return;
-        }
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
 
-        let userLocation = await Location.getCurrentPositionAsync({});
-        if (userLocation) {
-          setLocation(userLocation.coords);
-          setRegion({
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        }
-      } catch (error) {
-        setErrorMsg("Error fetching location");
-        console.error("Error fetching location: ", error);
+      let userLocation = await Location.getCurrentPositionAsync({});
+      if (userLocation) {
+        setLocation(userLocation.coords);
+        setRegion({
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
       }
     };
 
     fetchLocation();
   }, []);
 
-  if (errorMsg) {
-    return <Text>{errorMsg}</Text>;
-  }
+  // Function to get directions and display the route on the map
+  // const getDirections = async (destination) => {
+  //   if (!location) return;
 
+  //   const origin = `${location.latitude},${location.longitude}`;
+  //   const dest = `${destination.latitude},${destination.longitude}`;
+  //   console.log(origin);
+
+  //   const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${dest}&key=${googleMapsApiKey}`;
+
+  //   try {
+  //     const response = await fetch(url);
+  //     const data = await response.json();
+
+  //     if (data.routes && data.routes.length > 0) {
+  //       const points = data.routes[0].overview_polyline.points;
+  //       const coordinates = decodePolyline(points);
+  //       setRouteCoordinates(coordinates); // Set the route coordinates for polyline
+  //     } else {
+  //       console.error("No route found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching directions:", error);
+  //   }
+  // };
+
+  // Decode the polyline encoded by Google Maps Directions API
+  // const decodePolyline = (t) => {
+  //   let points = [];
+  //   let index = 0;
+  //   let len = t.length;
+  //   let lat = 0;
+  //   let lng = 0;
+
+  //   while (index < len) {
+  //     let shift = 0;
+  //     let result = 0;
+  //     let byte;
+  //     do {
+  //       byte = t.charCodeAt(index++) - 63;
+  //       result |= (byte & 0x1f) << shift;
+  //       shift += 5;
+  //     } while (byte >= 0x20);
+  //     let deltaLat = result & 0x01 ? ~(result >> 1) : result >> 1;
+  //     lat += deltaLat;
+
+  //     shift = 0;
+  //     result = 0;
+  //     do {
+  //       byte = t.charCodeAt(index++) - 63;
+  //       result |= (byte & 0x1f) << shift;
+  //       shift += 5;
+  //     } while (byte >= 0x20);
+  //     let deltaLng = result & 0x01 ? ~(result >> 1) : result >> 1;
+  //     lng += deltaLng;
+
+  //     points.push({ latitude: lat / 1e5, longitude: lng / 1e5 });
+  //   }
+
+  //   return points;
+  // };
+
+  // If we haven't fetched the location or region, display loading message
   if (!location || !region) {
     return <Text>Loading...</Text>;
   }
+
+  const currMerchHandler = (loc) => {
+    setCurrMerch(loc);
+  };
 
   return (
     <View style={{ flex: 1 }}>
       <MapView
         style={{ flex: 1 }}
         region={region}
-        provider={PROVIDER_GOOGLE} // Use Google Maps
-        customMapStyle={mapStyle} // Apply custom styles
+        provider={PROVIDER_GOOGLE}
         mapType="standard"
       >
+        {/* User's Location Marker */}
         <Marker
           coordinate={{
             latitude: location.latitude,
@@ -87,17 +128,30 @@ const MapScreen = () => {
           }}
         />
 
-        {locations.map((loc) => (
+        {/* Other Locations */}
+        {merch.map((loc, index) => (
           <Marker
-            key={loc.id}
-            coordinate={{ latitude: loc.latitude, longitude: loc.longitude }}
-            className="flex justify-center w-max items-center"
+            key={index}
+            coordinate={{ latitude: loc.lat, longitude: loc.lng }}
+            // onPress={() => getDirections(loc)}
+            onPress={() => currMerchHandler(loc)}
           >
+            {/* icon */}
             <LocMarker />
-            <Text className="text-[8px]">{loc.name}</Text>
+            <Text>{loc.name}</Text>
           </Marker>
         ))}
+
+        {/* Display the Route if available */}
+        {routeCoordinates.length > 0 && (
+          <Polyline
+            coordinates={routeCoordinates}
+            strokeColor="#000"
+            strokeWidth={5}
+          />
+        )}
       </MapView>
+      {currMerch && Object.keys(currMerch).length > 0 ? <EnterStore /> : ""}
     </View>
   );
 };

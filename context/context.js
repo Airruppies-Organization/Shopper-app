@@ -35,6 +35,30 @@ export const ContextProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [profile, setProfile] = useState({});
   const [tokenstatus, setTokenStatus] = useState(null);
+  const [currMerch, setCurrMerch] = useState({});
+  const [merch, setMerch] = useState([
+    {
+      id: "1",
+      name: "Sabo market",
+      address: "No 3, abc street, Yaba, Lagos.",
+      lat: 6.505509539812944,
+      lng: 3.3787271857951646,
+    },
+    {
+      id: "2",
+      name: "Ikeja Airport",
+      address: "Mo 5 Kano street, Opebi, Lagos",
+      lat: 6.573,
+      lng: 3.3193,
+    },
+    {
+      id: "3",
+      name: "Maryland Mall",
+      address: "No 9 Tolani street, Surulere Lagos",
+      lat: 6.5674,
+      lng: 3.3669,
+    },
+  ]);
 
   const router = useRouter();
   const { user } = useAuthContext();
@@ -42,6 +66,7 @@ export const ContextProvider = ({ children }) => {
   const baseURL = extra.baseURL;
   const pathname = usePathname();
 
+  // path authorization
   useEffect(() => {
     const verifier = async () => {
       if (user) {
@@ -65,6 +90,7 @@ export const ContextProvider = ({ children }) => {
     }
   }, [pathname, user]);
 
+  // cart data
   useEffect(() => {
     const fetcher = async () => {
       setCart([]);
@@ -82,6 +108,7 @@ export const ContextProvider = ({ children }) => {
     fetcher();
   }, [user]);
 
+  // order data
   useEffect(() => {
     const fetcher = async () => {
       if (user) {
@@ -99,16 +126,35 @@ export const ContextProvider = ({ children }) => {
     fetcher();
   }, [user]);
 
+  // profile data
+  // useEffect(() => {
+  //   const fetcher = async () => {
+  //     if (user) {
+  //       const response = await fetch(`${baseURL}/api/profile`, {
+  //         headers: {
+  //           authorization: `Bearer ${user.token}`,
+  //         },
+  //       });
+  //       const result = await response.json();
+  //       console.log(result.profile[0]);
+  //       setProfile(result.profile);
+  //     }
+  //   };
+  //   fetcher();
+  // }, [user]);
+
+  // get merchants
   useEffect(() => {
     const fetcher = async () => {
       if (user) {
-        const response = await fetch(`${baseURL}/api/profile`, {
+        const response = await fetch(`${baseURL}/api/merchants`, {
           headers: {
             authorization: `Bearer ${user.token}`,
           },
         });
         const result = await response.json();
-        setProfile(result);
+        console.log(result);
+        setMerch(result);
       }
     };
     fetcher();
@@ -165,26 +211,17 @@ export const ContextProvider = ({ children }) => {
           authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
-          id: String(Math.random() * 10),
           name: prod.name,
           price: prod.price,
           quantity: qty,
           ean_code: prod.ean_code,
+          merchant_id: currMerch.encryptedMerchId,
         }),
       });
 
-      await response.json();
+      const result = await response.json();
 
-      setCart((prev) => [
-        ...prev,
-        {
-          id: String(Math.random() * 10),
-          name: prod.name,
-          price: prod.price,
-          quantity: qty,
-          ean_code: prod.ean_code,
-        },
-      ]);
+      setCart((prev) => [...prev, result]);
 
       setPop(false);
       setScanned(false);
@@ -250,10 +287,10 @@ export const ContextProvider = ({ children }) => {
       },
       body: JSON.stringify({
         code: `${alpha}${numa}`,
-        id: String(Math.round(Math.random() * 100000)),
         method: type,
         status: type === "Wallet" ? "Paid" : "Not paid",
         data: [...cart],
+        merchant_id: currMerch.encryptedMerchId,
       }),
     });
 
@@ -335,6 +372,10 @@ export const ContextProvider = ({ children }) => {
         setSignin,
         profile,
         setProfile,
+        currMerch,
+        setCurrMerch,
+        merch,
+        setMerch,
       }}
     >
       {children}

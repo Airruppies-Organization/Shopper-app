@@ -13,11 +13,11 @@ const Cart = () => {
           <Text className="text-3xl mb-5">View Cart</Text>
           <CartSub />
           <View className="mt-5">
-            {cart?.map((item) => {
+            {cart?.map((item, index) => {
               return (
                 <Product
                   id={item._id}
-                  key={item.id}
+                  key={index}
                   name={item.name}
                   price={item.price}
                   quantity={item.quantity}

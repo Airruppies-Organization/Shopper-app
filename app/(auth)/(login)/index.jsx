@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import React, { useContext } from "react";
 import Input from "../../../components/input";
 import Submit from "../../../components/submit";
@@ -43,9 +43,12 @@ const Login = () => {
           />
 
           <Submit value="Submit" onPress={handleLogin} />
-          <View className="w-full flex items-end mt-3">
+          <Pressable
+            onPress={() => router.push("/(forgot)")}
+            className="w-full flex items-end mt-3"
+          >
             <Text className="text-secondary">Forgot Password</Text>
-          </View>
+          </Pressable>
 
           {error && (
             <View className="mt-3 w-full h-14 rounded-lg border-2 border-[#b12727] bg-[#ffe1e1] flex items-center justify-center">

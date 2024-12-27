@@ -28,7 +28,7 @@ const Password = () => {
         password: "",
         confirm: "",
       });
-      router.push("/dashboard");
+      router.push("/password");
     }
   };
   return (
