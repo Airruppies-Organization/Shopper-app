@@ -11,7 +11,7 @@ import { AppContext } from "../../context/context";
 const Slider = () => {
   const router = useRouter();
   const [verify, setVerify] = useState(false);
-  const { cart, payType } = useContext(AppContext);
+  const { cart, payType, paymentTypes } = useContext(AppContext);
 
   const total = cart.reduce((a, b) => a + b.price, 0);
 
@@ -29,27 +29,41 @@ const Slider = () => {
         <View className="border-b-[0.5px] flex items-center">
           <Text className="text-lg">Payment Method</Text>
           <View className="w-full flex flex-row justify-center my-2">
-            <Pressable
-              onPress={() => payType("Cash")}
-              className="w-24 h-14 flex justify-center items-center rounded-lg "
-            >
-              <Cash width={35} height={35} color="#61088E" />
-              <Text className="text-secondary">Cash</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => payType("Transfer")}
-              className="w-24 h-14 flex items-center rounded-lg justify-center "
-            >
-              <Transfer width={35} height={35} color="#61088E" />
-              <Text className="text-secondary">Transfer</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => payType("Card")}
-              className="w-24 h-14 flex items-center rounded-lg justify-center "
-            >
-              <Card width={35} height={35} color="#61088E" />
-              <Text className="text-secondary">POS</Text>
-            </Pressable>
+            {paymentTypes[0] && (
+              <Pressable
+                onPress={() => payType("Cash")}
+                className="w-24 h-14 flex justify-center items-center rounded-lg "
+              >
+                <Cash width={35} height={35} color="#61088E" />
+                <Text className="text-secondary">
+                  {paymentTypes[0].paymentType}
+                </Text>
+              </Pressable>
+            )}
+
+            {paymentTypes[1] && (
+              <Pressable
+                onPress={() => payType("Card")}
+                className="w-24 h-14 flex items-center rounded-lg justify-center "
+              >
+                <Card width={35} height={35} color="#61088E" />
+                <Text className="text-secondary">
+                  {paymentTypes[1].paymentType}
+                </Text>
+              </Pressable>
+            )}
+
+            {paymentTypes[2] && (
+              <Pressable
+                onPress={() => payType("Transfer")}
+                className="w-24 h-14 flex items-center rounded-lg justify-center "
+              >
+                <Transfer width={35} height={35} color="#61088E" />
+                <Text className="text-secondary">
+                  {paymentTypes[2].paymentType}
+                </Text>
+              </Pressable>
+            )}
           </View>
         </View>
       </View>

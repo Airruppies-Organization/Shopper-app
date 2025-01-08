@@ -18,13 +18,17 @@ const QtyModal = () => {
   const update = (type) => {
     setQty((prevQty) => {
       const newQty =
-        type === "minus" ? (prevQty > 1 ? prevQty - 1 : prevQty) : prevQty + 1;
+        type === "minus"
+          ? prevQty > 1
+            ? prevQty - 1
+            : prevQty
+          : type === "add" && prevQty + 1;
 
       setProd((prevProd) => {
         const basePrice = prevProd.price / (prevQty || 1);
         const newPrice = basePrice * newQty;
 
-        return { ...prevProd, price: Number(newPrice.toFixed(2)) };
+        return { ...prevProd, price: newPrice };
       });
 
       return newQty;
@@ -69,6 +73,7 @@ const QtyModal = () => {
               <View className="h-8 w-8 flex items-center justify-center mx-2">
                 <Text className="font-bold text-lg">{qty}</Text>
               </View>
+
               <Pressable
                 onPress={() => update("add")}
                 className="h-8 w-8 rounded-lg bg-secondary flex items-center justify-center"
@@ -77,14 +82,16 @@ const QtyModal = () => {
               </Pressable>
             </View>
           </View>
-          <View>
-            <Pressable
-              onPress={() => cartAction(prod.name)}
-              className="h-14 w-full rounded-lg mb-4 bg-secondary flex items-center justify-center"
-            >
-              <Text className="text-text-white font-bold"> Add to Cart</Text>
-            </Pressable>
-          </View>
+          {/* <View> */}
+          <Pressable
+            onPress={() => {
+              cartAction(prod.name);
+            }}
+            className="h-14 w-full rounded-lg mb-4 bg-secondary flex items-center justify-center"
+          >
+            <Text className="text-text-white font-bold"> Add to Cart</Text>
+          </Pressable>
+          {/* </View> */}
         </View>
       </View>
     </Modal>

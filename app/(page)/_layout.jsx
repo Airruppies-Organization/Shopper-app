@@ -87,10 +87,10 @@ const PageLayout = () => {
                   width={20}
                   color={focused ? "#61088E" : "#000000"}
                 />
-                {cart.length >= 1 && (
+                {cart?.length >= 1 && (
                   <View className="absolute right-[-5px] top-[-4px] h-4 w-4 flex items-center justify-center rounded-full bg-[#0EC423]">
                     <Text className="text-[11px] text-text-white">
-                      {cart.length}
+                      {cart?.length}
                     </Text>
                   </View>
                 )}

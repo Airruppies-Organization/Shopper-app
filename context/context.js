@@ -36,6 +36,7 @@ export const ContextProvider = ({ children }) => {
   const [profile, setProfile] = useState({});
   const [tokenstatus, setTokenStatus] = useState(null);
   const [currMerch, setCurrMerch] = useState({});
+  const [paymentTypes, setPaymentTypes] = useState([]);
   const [merch, setMerch] = useState([
     {
       id: "1",
@@ -68,6 +69,7 @@ export const ContextProvider = ({ children }) => {
 
   // path authorization
   useEffect(() => {
+    if (!user) return;
     const verifier = async () => {
       if (user) {
         const response = await fetch(
@@ -92,24 +94,31 @@ export const ContextProvider = ({ children }) => {
 
   // cart data
   useEffect(() => {
+    if (!user || !currMerch) return;
     const fetcher = async () => {
-      setCart([]);
-      if (user) {
-        const response = await fetch(`${baseURL}/api/cartData`, {
-          headers: {
-            authorization: `Bearer ${user.token}`,
-          },
-        });
-        const result = await response.json();
-
-        setCart(result);
+      try {
+        if (user) {
+          const response = await fetch(
+            `${baseURL}/api/cart?merchant_id=${currMerch._id}`,
+            {
+              headers: {
+                authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          const result = await response.json();
+          result.data && setCart(result.data);
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     fetcher();
-  }, [user]);
+  }, [user, currMerch]);
 
   // order data
   useEffect(() => {
+    if (!user) return;
     const fetcher = async () => {
       if (user) {
         const response = await fetch(`${baseURL}/api/orders`, {
@@ -127,24 +136,25 @@ export const ContextProvider = ({ children }) => {
   }, [user]);
 
   // profile data
-  // useEffect(() => {
-  //   const fetcher = async () => {
-  //     if (user) {
-  //       const response = await fetch(`${baseURL}/api/profile`, {
-  //         headers: {
-  //           authorization: `Bearer ${user.token}`,
-  //         },
-  //       });
-  //       const result = await response.json();
-  //       console.log(result.profile[0]);
-  //       setProfile(result.profile);
-  //     }
-  //   };
-  //   fetcher();
-  // }, [user]);
+  useEffect(() => {
+    if (!user) return;
+    const fetcher = async () => {
+      if (user) {
+        const response = await fetch(`${baseURL}/api/profile`, {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        });
+        const result = await response.json();
+        setProfile(result.profile[0]);
+      }
+    };
+    fetcher();
+  }, [user]);
 
   // get merchants
   useEffect(() => {
+    if (!user) return;
     const fetcher = async () => {
       if (user) {
         const response = await fetch(`${baseURL}/api/merchants`, {
@@ -153,14 +163,68 @@ export const ContextProvider = ({ children }) => {
           },
         });
         const result = await response.json();
-        console.log(result);
+
         setMerch(result);
       }
     };
     fetcher();
   }, [user]);
 
+  // payment types
+  useEffect(() => {
+    if (!Object.keys(currMerch).length > 0) return;
+
+    const fetcher = async () => {
+      try {
+        if (user) {
+          const response = await fetch(
+            `${baseURL}/api/paymentTypes?merchant_id=${currMerch._id}`,
+            {
+              headers: {
+                authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+
+          const result = await response.json();
+
+          setPaymentTypes(result.merchantPaymentTypes);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetcher();
+  }, [user, currMerch]);
+
+  // useEffect(() => {
+  //   const fetcher = async () => {
+  //     try {
+  //       if (user) {
+  //         const response = await fetch(
+  //           `${baseURL}/api/paymentTypes?merchant_id=${currMerch._id}`,
+  //           {
+  //             headers: {
+  //               authorization: `Bearer ${user.token}`,
+  //             },
+  //           }
+  //         );
+
+  //         const result = await response.json();
+  //         console.log(result);
+  //         // setOrders(result);
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   fetcher();
+  // }, [user]);
+
   // handler for when the barcode has been scanned
+
   const handleBarCodeScanned = async ({ type, data }) => {
     //  when barcode has been scanned, setScanned to true so that if scanned is true, the camera doesnt scan any barcode
     setScanned(true);
@@ -197,32 +261,36 @@ export const ContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+      setScanned(false);
     }
   };
 
+  // revisit this function
   const cartAction = async (item) => {
-    const product = cart.find((prod) => prod.name === item);
+    const product = cart?.find((prod) => prod.name === item);
 
     if (!product) {
-      const response = await fetch(`${baseURL}/api/cartData`, {
+      const response = await fetch(`${baseURL}/api/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
-          name: prod.name,
+          product_name: prod.name,
           price: prod.price,
           quantity: qty,
-          ean_code: prod.ean_code,
-          merchant_id: currMerch.encryptedMerchId,
+          product_code: prod.ean_code,
+          merchant_id: currMerch._id,
         }),
       });
 
       const result = await response.json();
 
-      setCart((prev) => [...prev, result]);
-
+      if (!response.ok) {
+        console.log(result);
+      }
+      setCart((prev) => [...prev, result.cartData]);
       setPop(false);
       setScanned(false);
       setQty(1);
@@ -238,42 +306,42 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  const handleClick = async (e, id) => {
-    const product = cart.find((item) => item.id === id);
-    const base = product.price / product.quantity;
+  // const handleClick = async (e, id) => {
+  //   const product = cart.find((item) => item.id === id);
+  //   const base = product.price / product.quantity;
 
-    const updatedQty =
-      e === "plus"
-        ? product.quantity + 1
-        : e === "minus" && product.quantity > 1
-        ? product.quantity - 1
-        : product.quantity;
+  //   const updatedQty =
+  //     e === "plus"
+  //       ? product.quantity + 1
+  //       : e === "minus" && product.quantity > 1
+  //       ? product.quantity - 1
+  //       : product.quantity;
 
-    const newPrice = base + (updatedQty - 1) * base;
+  //   const newPrice = base + (updatedQty - 1) * base;
 
-    const resp = await fetch(`${baseURL}/cart/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({
-        ...product,
-        quantity: updatedQty,
-        price: Number(newPrice.toFixed(2)), //prettier-ignore
-      }),
-    });
+  //   const resp = await fetch(`${baseURL}/cart/${id}`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: `Bearer ${user.token}`,
+  //     },
+  //     body: JSON.stringify({
+  //       ...product,
+  //       quantity: updatedQty,
+  //       price: Number(newPrice.toFixed(2)), //prettier-ignore
+  //     }),
+  //   });
 
-    await resp.json();
+  //   await resp.json();
 
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === product.id
-          ? { ...product, quantity: updatedQty, price: newPrice }
-          : item
-      )
-    );
-  };
+  //   setCart((prev) =>
+  //     prev.map((item) =>
+  //       item.id === product.id
+  //         ? { ...product, quantity: updatedQty, price: newPrice }
+  //         : item
+  //     )
+  //   );
+  // };
 
   const payType = async (type) => {
     const alpha = String.fromCharCode(Math.round(Math.random() * 25 + 65));
@@ -325,17 +393,47 @@ export const ContextProvider = ({ children }) => {
   };
 
   const cartDelete = async (id) => {
-    const response = await fetch(`${baseURL}/api/cartData/${id}`, {
-      method: "DELETE",
-
-      headers: {
-        authorization: `Bearer ${user.token}`,
-      },
-    });
+    const response = await fetch(
+      `${baseURL}/api/cart?id=${id}&merchant_id=${currMerch._id}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
 
     const result = await response.json();
+    setCart(result.data);
+  };
 
-    setCart(cart.filter((item) => item._id !== result._id));
+  const updateCart = async (id, method) => {
+    try {
+      const res = await fetch(`${baseURL}/api/updateCart`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          id: id,
+          method: method,
+          merchant_id: currMerch._id,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        setCart((prev) =>
+          prev.map((item) =>
+            item._id === result.data._id ? result.data : item
+          )
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -358,7 +456,6 @@ export const ContextProvider = ({ children }) => {
         setCart,
         qty,
         setQty,
-        handleClick,
         payType,
         session,
         setSession,
@@ -376,6 +473,9 @@ export const ContextProvider = ({ children }) => {
         setCurrMerch,
         merch,
         setMerch,
+        updateCart,
+        paymentTypes,
+        setPaymentTypes,
       }}
     >
       {children}

@@ -15,8 +15,6 @@ const MapScreen = () => {
 
   const { merch, setCurrMerch, currMerch } = useContext(AppContext);
 
-  const googleMapsApiKey = "AIzaSyA1RLkDXGSPHhgPoFcvm1PqGFd5XopuT6o";
-
   // Fetch the current location of the user
   useEffect(() => {
     const fetchLocation = async () => {

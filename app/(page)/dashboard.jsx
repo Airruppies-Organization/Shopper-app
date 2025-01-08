@@ -50,7 +50,7 @@ const Dashboard = () => {
           <Sub
             label="Find Stores"
             icon={<Store color="#61088E" />}
-            to="/mapView"
+            to="/findStores"
           />
 
           <Sub

@@ -51,7 +51,8 @@
       ]
     ],
     "extra": {
-      "baseURL": "http://192.168.125.27:7000",
+      "baseURL": "http://192.168.200.27:7000",
+      "googleApiKey": "AIzaSyA1RLkDXGSPHhgPoFcvm1PqGFd5XopuT6o",
       "router": {
         "origin": false
       },

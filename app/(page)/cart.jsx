@@ -18,8 +18,8 @@ const Cart = () => {
                 <Product
                   id={item._id}
                   key={index}
-                  name={item.name}
-                  price={item.price}
+                  name={item.product_name}
+                  price={item.price.toFixed(2)}
                   quantity={item.quantity}
                 />
               );

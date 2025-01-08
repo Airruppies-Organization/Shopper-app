@@ -7,7 +7,7 @@ import Delete from "../assets/icons/delete";
 import { AppContext } from "../context/context";
 
 const Product = ({ img, name, price, quantity, id }) => {
-  const { cart, setCart, handleClick, cartDelete } = useContext(AppContext);
+  const { cart, setCart, cartDelete, updateCart } = useContext(AppContext);
 
   return (
     <View className="w-full border-b border-b-black h-20 px-2 py-2 flex flex-row justify-between">
@@ -39,7 +39,7 @@ const Product = ({ img, name, price, quantity, id }) => {
       <View className="flex flex-row items-center">
         <View className="flex flex-row items-center h-[40%] mr-3">
           <Pressable
-            onPress={() => handleClick((e = "plus"), id)}
+            onPress={() => updateCart(id, "increase")}
             id="plus"
             className="w-7 h-7 flex items-center justify-center bg-[#61088E] rounded-md"
           >
@@ -49,7 +49,7 @@ const Product = ({ img, name, price, quantity, id }) => {
             <Text>{quantity}</Text>
           </View>
           <Pressable
-            onPress={() => handleClick((e = "minus"), id)}
+            onPress={() => updateCart(id, "decrease")}
             id="minus"
             className="w-7 h-7 flex items-center justify-center bg-[#61088E] rounded-md"
           >
