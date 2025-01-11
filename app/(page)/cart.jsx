@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import Product from "../../pageComponents/product";
 import CartSub from "../../pageComponents/cartSub";
 import { AppContext } from "../../context/context";
+import FlashMessage from "react-native-flash-message";
 
 const Cart = () => {
   const { cart, setCart } = useContext(AppContext);
@@ -19,7 +20,7 @@ const Cart = () => {
                   id={item._id}
                   key={index}
                   name={item.product_name}
-                  price={item.price.toFixed(2)}
+                  price={item.price}
                   quantity={item.quantity}
                 />
               );
@@ -27,6 +28,7 @@ const Cart = () => {
           </View>
         </View>
       </View>
+      <FlashMessage position="top" />
     </ScrollView>
   );
 };

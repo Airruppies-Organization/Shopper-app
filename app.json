@@ -7,6 +7,10 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "androidNavigationBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#FFFFFF"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -51,7 +55,7 @@
       ]
     ],
     "extra": {
-      "baseURL": "http://192.168.200.27:7000",
+      "baseURL": "http://192.168.126.27:7000",
       "googleApiKey": "AIzaSyA1RLkDXGSPHhgPoFcvm1PqGFd5XopuT6o",
       "router": {
         "origin": false

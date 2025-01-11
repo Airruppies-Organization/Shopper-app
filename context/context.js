@@ -5,6 +5,7 @@ import { showMessage } from "react-native-flash-message";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useSearchParams } from "expo-router/build/hooks";
 
 export const AppContext = createContext();
 
@@ -37,35 +38,15 @@ export const ContextProvider = ({ children }) => {
   const [tokenstatus, setTokenStatus] = useState(null);
   const [currMerch, setCurrMerch] = useState({});
   const [paymentTypes, setPaymentTypes] = useState([]);
-  const [merch, setMerch] = useState([
-    {
-      id: "1",
-      name: "Sabo market",
-      address: "No 3, abc street, Yaba, Lagos.",
-      lat: 6.505509539812944,
-      lng: 3.3787271857951646,
-    },
-    {
-      id: "2",
-      name: "Ikeja Airport",
-      address: "Mo 5 Kano street, Opebi, Lagos",
-      lat: 6.573,
-      lng: 3.3193,
-    },
-    {
-      id: "3",
-      name: "Maryland Mall",
-      address: "No 9 Tolani street, Surulere Lagos",
-      lat: 6.5674,
-      lng: 3.3669,
-    },
-  ]);
+  const [merch, setMerch] = useState([]);
+  const [storeSrch, setStoreSrch] = useState("");
 
   const router = useRouter();
   const { user } = useAuthContext();
   const extra = Constants.expoConfig?.extra;
   const baseURL = extra.baseURL;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   // path authorization
   useEffect(() => {
@@ -155,16 +136,21 @@ export const ContextProvider = ({ children }) => {
   // get merchants
   useEffect(() => {
     if (!user) return;
+    console.log(searchParams.toString());
     const fetcher = async () => {
-      if (user) {
-        const response = await fetch(`${baseURL}/api/merchants`, {
-          headers: {
-            authorization: `Bearer ${user.token}`,
-          },
-        });
-        const result = await response.json();
+      try {
+        if (user) {
+          const response = await fetch(`${baseURL}/api/merchants`, {
+            headers: {
+              authorization: `Bearer ${user.token}`,
+            },
+          });
+          const result = await response.json();
 
-        setMerch(result);
+          setMerch(result);
+        }
+      } catch (error) {
+        console.error(error.message);
       }
     };
     fetcher();
@@ -226,6 +212,21 @@ export const ContextProvider = ({ children }) => {
   // handler for when the barcode has been scanned
 
   const handleBarCodeScanned = async ({ type, data }) => {
+    // mercant check
+    if (Object.values(currMerch).length === 0) {
+      router.push("/dashboard");
+      showMessage({
+        message: "Error",
+        description: "You have not entered your respective store",
+        type: "danger",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+
+      return;
+    }
+
     //  when barcode has been scanned, setScanned to true so that if scanned is true, the camera doesnt scan any barcode
     setScanned(true);
     // then open the pop modal to set the quantity of the product to be bought
@@ -256,11 +257,20 @@ export const ContextProvider = ({ children }) => {
           type: "danger",
           icon: "auto",
           position: "top",
+          duration: 3000,
         });
         setScanned(false);
       }
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      // console.error("There was a problem with the fetch operation:", error);
+      showMessage({
+        message: "Error",
+        description: `There was a problem with the fetch operation: ${error.message}`,
+        type: "danger",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
       setScanned(false);
     }
   };
@@ -290,7 +300,7 @@ export const ContextProvider = ({ children }) => {
       if (!response.ok) {
         console.log(result);
       }
-      setCart((prev) => [...prev, result.cartData]);
+      setCart(result.cartData);
       setPop(false);
       setScanned(false);
       setQty(1);
@@ -306,90 +316,49 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-  // const handleClick = async (e, id) => {
-  //   const product = cart.find((item) => item.id === id);
-  //   const base = product.price / product.quantity;
-
-  //   const updatedQty =
-  //     e === "plus"
-  //       ? product.quantity + 1
-  //       : e === "minus" && product.quantity > 1
-  //       ? product.quantity - 1
-  //       : product.quantity;
-
-  //   const newPrice = base + (updatedQty - 1) * base;
-
-  //   const resp = await fetch(`${baseURL}/cart/${id}`, {
-  //     method: "PUT",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       authorization: `Bearer ${user.token}`,
-  //     },
-  //     body: JSON.stringify({
-  //       ...product,
-  //       quantity: updatedQty,
-  //       price: Number(newPrice.toFixed(2)), //prettier-ignore
-  //     }),
-  //   });
-
-  //   await resp.json();
-
-  //   setCart((prev) =>
-  //     prev.map((item) =>
-  //       item.id === product.id
-  //         ? { ...product, quantity: updatedQty, price: newPrice }
-  //         : item
-  //     )
-  //   );
-  // };
-
   const payType = async (type) => {
-    const alpha = String.fromCharCode(Math.round(Math.random() * 25 + 65));
-    const numa = Math.round(Math.random() * 100);
+    try {
+      const res = await fetch(`${baseURL}/api/pay`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          data: cart,
+          merchant_id: currMerch._id,
+          paymentMethod: type,
+          price: cart.reduce((a, b) => a + b.price, 0),
+          quantity: cart.length,
+        }),
+      });
 
-    const response = await fetch(`${baseURL}/api/sessionData`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({
-        code: `${alpha}${numa}`,
-        method: type,
-        status: type === "Wallet" ? "Paid" : "Not paid",
-        data: [...cart],
-        merchant_id: currMerch.encryptedMerchId,
-      }),
-    });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
-    const orderResponse = await fetch(`${baseURL}/api/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({
-        code: `${alpha}${numa}`,
-        id: String(Math.round(Math.random() * 100000)),
-        method: type,
-        status: type === "Wallet" ? "Paid" : "Not paid",
-        data: [...cart],
-        total: cart.reduce((a, b) => a + b.price, 0),
-      }),
-    });
+      const result = await res.json();
 
-    await response.json();
-    await orderResponse.json();
+      setSession({
+        code: result.bill.bill_code,
+        method: paymentTypes.find(
+          (item) => item._id === result.bill.paymentMethod
+        ).paymentType,
+        status: result.bill.paymentStatus,
+        createdAt: result.bill.createdAt,
+      });
 
-    setSession({
-      code: `${alpha}${numa}`,
-      id: String(Math.round(Math.random() * 100000)),
-      method: type,
-      status: type === "Wallet" ? "Paid" : "Not paid",
-    });
-
-    setOrders(orderResponse);
-    router.push("summary");
+      router.push("summary");
+    } catch (error) {
+      // console.error("Error occurred:", error);
+      showMessage({
+        message: "Error",
+        description: ("Error occurred:", error),
+        type: "danger",
+        icon: "auto",
+        position: "top",
+      });
+    }
   };
 
   const cartDelete = async (id) => {
@@ -432,7 +401,42 @@ export const ContextProvider = ({ children }) => {
         );
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
+      showMessage({
+        message: "Error",
+        description: ("Error occurred:", err.message),
+        type: "danger",
+        icon: "auto",
+        position: "top",
+      });
+    }
+  };
+
+  const handleSearchStore = async () => {
+    const setParams = new URLSearchParams(searchParams);
+    setParams.set("searchStore", storeSrch);
+
+    // Fetch merchants or handle logic directly
+    try {
+      const response = await fetch(
+        `${baseURL}/api/merchants?${setParams.toString()}`,
+        {
+          headers: {
+            authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      const result = await response.json();
+      setMerch(result); // Update state directly
+    } catch (error) {
+      // console.error("Error fetching merchants:", error.message);
+      showMessage({
+        message: "Error",
+        description: ("Error fetching merchants:", error.message),
+        type: "danger",
+        icon: "auto",
+        position: "top",
+      });
     }
   };
 
@@ -476,6 +480,9 @@ export const ContextProvider = ({ children }) => {
         updateCart,
         paymentTypes,
         setPaymentTypes,
+        storeSrch,
+        setStoreSrch,
+        handleSearchStore,
       }}
     >
       {children}

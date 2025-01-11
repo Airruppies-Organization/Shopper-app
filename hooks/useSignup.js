@@ -41,7 +41,7 @@ const useSignup = () => {
     }
 
     if (res.ok) {
-      SecureStore.setItem("user", JSON.stringify(result));
+      SecureStore.setItem("user", JSON.stringify(result.token));
       dispatch({ type: "SIGNUP", payload: result });
       setIsLoading(false);
 

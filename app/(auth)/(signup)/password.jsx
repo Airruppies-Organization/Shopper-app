@@ -19,7 +19,7 @@ const Password = () => {
       registration.password,
       registration.confirm
     );
-
+    console.log(register);
     if (register) {
       setRegistration({
         username: "",
@@ -28,7 +28,8 @@ const Password = () => {
         password: "",
         confirm: "",
       });
-      router.push("/password");
+
+      router.push("/dashboard");
     }
   };
   return (

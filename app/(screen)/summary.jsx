@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { Image } from "react-native";
 import { Spar } from "../../assets/images/image";
@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context/context";
 
 const Summary = () => {
-  const { cart, session } = useContext(AppContext);
+  const { cart, session, currMerch } = useContext(AppContext);
 
   const total = cart.reduce((a, b) => a + b.price, 0);
   const message =
@@ -21,16 +21,32 @@ const Summary = () => {
       : "";
 
   const router = useRouter();
+
+  const isoString = session.createdAt; // Create a Date object
+  const date = new Date(isoString); // Extract the date components
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // getMonth() is zero-based
+  const day = date.getDate().toString().padStart(2, "0"); // Format the date as a string (e.g., YYYY-MM-DD)
+  const formattedDate = `${year}-${month}-${day}`;
+
   return (
     <View className="bg-primary px-4 h-full w-full pt-20 flex items-center">
-      <Cancel
-        width={30}
-        height={30}
-        onPress={() => router.push("(page)/cart")}
-        className="ml-2 absolute top-9 left-4"
-      />
+      <Pressable
+        onPress={() => router.push("dashboard")}
+        className="flex flex-row space-x-2 items-center ml-2 absolute top-9 left-4"
+      >
+        <Cancel width={20} height={20} color={"black"} className="" />
+        <Text className="text-black font-semibold">Close</Text>
+      </Pressable>
+
       <View className="flex items-center w-full">
-        <Image source={Spar} width={50} height={50} />
+        <Image
+          source={{
+            uri: currMerch.logo,
+          }}
+          width={50}
+          height={50}
+        />
         <View className="w-[50%] mt-2">
           <Text className="text-xs text-center leading-tight">
             Tejuosho Shopping Center, Ojuelegba Road, Yaba
@@ -41,8 +57,8 @@ const Summary = () => {
         <Text className="font-sbold text-xl mb-4">Your Code</Text>
 
         <Text
-          style={{ letterSpacing: 17 }}
-          className="font-sregular text-6xl text-secondary mb-4"
+          style={{ letterSpacing: 5 }}
+          className="font-sregular text-5xl text-secondary mb-4"
         >
           {session.code}
         </Text>
@@ -82,7 +98,7 @@ const Summary = () => {
           </View>
           <View className="flex flex-row w-full justify-between mb-3">
             <Text className="font-sregular">Date of Purchase:</Text>
-            <Text className="font-sregular">08-19-2024</Text>
+            <Text className="font-sregular">{formattedDate}</Text>
           </View>
         </View>
         <View className="w-full flex items-center">

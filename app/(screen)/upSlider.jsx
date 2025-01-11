@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, TouchableHighlight } from "react-native";
 import Cash from "../../assets/icons/cash";
 import Transfer from "../../assets/icons/transfer";
 import Card from "../../assets/icons/card";
@@ -29,41 +29,27 @@ const Slider = () => {
         <View className="border-b-[0.5px] flex items-center">
           <Text className="text-lg">Payment Method</Text>
           <View className="w-full flex flex-row justify-center my-2">
-            {paymentTypes[0] && (
-              <Pressable
-                onPress={() => payType("Cash")}
-                className="w-24 h-14 flex justify-center items-center rounded-lg "
+            {paymentTypes.map((type, index) => (
+              <TouchableHighlight
+                key={index}
+                underlayColor={"#DFDFDF"}
+                onPress={() => payType(type)}
+                className="w-24 h-14 flex items-center rounded-lg justify-center"
               >
-                <Cash width={35} height={35} color="#61088E" />
-                <Text className="text-secondary">
-                  {paymentTypes[0].paymentType}
-                </Text>
-              </Pressable>
-            )}
-
-            {paymentTypes[1] && (
-              <Pressable
-                onPress={() => payType("Card")}
-                className="w-24 h-14 flex items-center rounded-lg justify-center "
-              >
-                <Card width={35} height={35} color="#61088E" />
-                <Text className="text-secondary">
-                  {paymentTypes[1].paymentType}
-                </Text>
-              </Pressable>
-            )}
-
-            {paymentTypes[2] && (
-              <Pressable
-                onPress={() => payType("Transfer")}
-                className="w-24 h-14 flex items-center rounded-lg justify-center "
-              >
-                <Transfer width={35} height={35} color="#61088E" />
-                <Text className="text-secondary">
-                  {paymentTypes[2].paymentType}
-                </Text>
-              </Pressable>
-            )}
+                <>
+                  {type.paymentType === "Cash" && (
+                    <Cash width={35} height={35} color="#61088E" />
+                  )}
+                  {type.paymentType === "Card" && (
+                    <Card width={35} height={35} color="#61088E" />
+                  )}
+                  {type.paymentType === "Transfer" && (
+                    <Transfer width={35} height={35} color="#61088E" />
+                  )}
+                  <Text className="text-secondary">{type.paymentType}</Text>
+                </>
+              </TouchableHighlight>
+            ))}
           </View>
         </View>
       </View>

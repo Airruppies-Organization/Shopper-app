@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Input from "../../../components/input";
 import Submit from "../../../components/submit";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,6 +10,7 @@ import { router } from "expo-router";
 const Login = () => {
   const { signin, setSignin } = useContext(AppContext);
   const { login, isLoading, error } = useLogin();
+  const [seePassword, setSeePassword] = useState(false);
 
   const handleLogin = async () => {
     const result = await login(signin.email, signin.password);
@@ -35,6 +36,7 @@ const Login = () => {
             value={signin.email}
             handleChange={(e) => setSignin({ ...signin, email: e })}
           />
+
           <Input
             type="password"
             label="Password"
