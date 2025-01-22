@@ -24,9 +24,9 @@ const Input = ({ label, handleChange, value, type }) => {
         />
         {type === "password" ? (
           view ? (
-            <EyePasswordSee onPress={handleToggle} color="#61088E" />
-          ) : (
             <EyePasswordBlind onPress={handleToggle} color="#575757" />
+          ) : (
+            <EyePasswordSee onPress={handleToggle} color="#61088E" />
           )
         ) : (
           ""

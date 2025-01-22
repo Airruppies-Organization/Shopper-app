@@ -42,6 +42,7 @@ const Dashboard = () => {
       text: "SPAR",
     },
   ];
+
   return (
     <ScrollView>
       <View className="bg-primary h-full px-4">

@@ -40,6 +40,7 @@ export const ContextProvider = ({ children }) => {
   const [paymentTypes, setPaymentTypes] = useState([]);
   const [merch, setMerch] = useState([]);
   const [storeSrch, setStoreSrch] = useState("");
+  const [emailVer, setEmailVer] = useState("");
 
   const router = useRouter();
   const { user } = useAuthContext();
@@ -127,6 +128,7 @@ export const ContextProvider = ({ children }) => {
           },
         });
         const result = await response.json();
+
         setProfile(result.profile[0]);
       }
     };
@@ -436,6 +438,55 @@ export const ContextProvider = ({ children }) => {
         type: "danger",
         icon: "auto",
         position: "top",
+        duration: 4000,
+      });
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    try {
+      const fetcher = await fetch(`${baseURL}/api/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          username: profile.username,
+          email: profile.email,
+          phoneNumber: profile.phoneNumber,
+        }),
+      });
+
+      const res = await fetcher.json();
+
+      if (!res.ok) {
+        showMessage({
+          message: "Error",
+          description: `${res.error}`,
+          type: "danger",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+      }
+
+      showMessage({
+        message: "Success",
+        description: "Profile update successful!!!",
+        type: "success",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+    } catch (error) {
+      showMessage({
+        message: "Error",
+        description: ("Error updating profile:", error.message),
+        type: "danger",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
       });
     }
   };
@@ -483,6 +534,9 @@ export const ContextProvider = ({ children }) => {
         storeSrch,
         setStoreSrch,
         handleSearchStore,
+        handleUpdateProfile,
+        emailVer,
+        setEmailVer,
       }}
     >
       {children}

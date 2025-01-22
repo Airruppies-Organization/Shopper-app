@@ -25,18 +25,6 @@ const FindStores = () => {
     router.push("/dashboard");
   };
 
-  // const calculateDistance = async () => {
-  //   if (!origin || !destination) return;
-  //   try {
-  //     const response = await axios.get(
-  //       `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.latitude},${origin.longitude}&destinations=${destination.latitude},${destination.longitude}&key=${process.env.GOOGLE_API_KEY}`
-  //     );
-  //     setDistance(response.data.rows[0].elements[0].distance.text);
-  //   } catch (error) {
-  //     console.error("Error fetching distance:", error);
-  //   }
-  // };
-
   return (
     <ScrollView>
       <View className="h-full pt-16 relative bg-primary">

@@ -5,12 +5,20 @@ import Submit from "../../../components/submit";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppContext } from "../../../context/context";
 import { router } from "expo-router";
+import Constants from "expo-constants";
+import FlashMessage from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const Forgotpassword = () => {
-  const { signin, setSignin } = useContext(AppContext);
-  const [values, setValues] = useState(["", "", "", "", "", ""]);
+  const { emailVer, setEmailVer } = useContext(AppContext);
+  const [values, setValues] = useState(["", "", "", "", "", "", ""]);
+
+  const [viewTok, setViewTok] = useState(false);
 
   const inputs = useRef([]);
+
+  const extra = Constants.expoConfig?.extra;
+  const baseURL = extra.baseURL;
 
   useEffect(() => {
     inputs.current[0]?.focus();
@@ -34,6 +42,105 @@ const Forgotpassword = () => {
     }
   };
 
+  const verifyEmail = async () => {
+    try {
+      const verifier = await fetch(`${baseURL}/auth/forgotpassword`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emailVer }),
+      });
+
+      const res = await verifier.json();
+
+      if (verifier.ok) {
+        showMessage({
+          message: "Success",
+          description: res.message,
+          type: "success",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+
+        setViewTok(true);
+      }
+
+      if (!verifier.ok) {
+        showMessage({
+          message: "Warning",
+          description: res.error,
+          type: "warning",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      showMessage({
+        message: "Warning",
+        description: error,
+        type: "warning",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+    }
+  };
+
+  const verifyOTP = async () => {
+    try {
+      const verifier = await fetch(`${baseURL}/auth/verifytoken`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailVer,
+          otpcode: parseInt(values.join("")),
+        }),
+      });
+
+      const res = await verifier.json();
+
+      if (verifier.ok) {
+        showMessage({
+          message: "Success",
+          description: res.message,
+          type: "success",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+
+        setValues(["", "", "", "", "", "", ""]);
+
+        router.push("/resetPassword");
+      }
+
+      if (!verifier.ok) {
+        showMessage({
+          message: "Warning",
+          description: res.error,
+          type: "warning",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+      }
+    } catch (error) {
+      showMessage({
+        message: "Error",
+        description: error,
+        type: "danger",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+    }
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -43,43 +150,42 @@ const Forgotpassword = () => {
           </Text>
           <Input
             label="Enter your email"
-            handleChange={(e) => setSignin({ ...signin, email: e })}
+            value={emailVer}
+            handleChange={(e) => setEmailVer(e)}
           />
-          <Submit value="Verify email" />
+          <Submit onPress={verifyEmail} value="Verify email" />
 
-          <View className="mt-5 flex border-t-[0.5px] border-t-black py-5 px-3">
-            <Text className="w-full text-lg">Verify token</Text>
-            <View className="flex flex-row space-x-2">
-              {values.map((value, index) => (
-                <TextInput
-                  key={index}
-                  maxLength={1}
-                  value={value}
-                  onChangeText={(text) => handleChange(text, index)}
-                  onKeyPress={(e) => handleKeyPress(e, index)}
-                  ref={(el) => (inputs.current[index] = el)}
-                  style={{
-                    width: 40,
-                    height: 56,
-                    textAlign: "center",
-                    fontSize: 24,
-                    borderBottomWidth: 2,
-                    borderColor: "black",
-                  }}
-                />
-              ))}
+          {viewTok && (
+            <View className="mt-5 flex py-5 px-3">
+              <Text className="w-full text-lg">Verify token</Text>
+              <View className="flex flex-row justify-center space-x-2 mb-3">
+                {values.map((value, index) => (
+                  <TextInput
+                    key={index}
+                    maxLength={1}
+                    keyboardType="numeric"
+                    value={value}
+                    onChangeText={(text) => handleChange(text, index)}
+                    onKeyPress={(e) => handleKeyPress(e, index)}
+                    ref={(el) => (inputs.current[index] = el)}
+                    style={{
+                      width: 30,
+                      height: 56,
+                      textAlign: "center",
+                      fontSize: 24,
+                      borderBottomWidth: 2,
+                      borderColor: "black",
+                    }}
+                  />
+                ))}
+              </View>
+
+              <Submit onPress={verifyOTP} value="Confirm Token" />
             </View>
-            <Pressable className="w-full py-5 rounded-lg bg-secondary flex justify-center flex-row mt-5">
-              <Text
-                onPress={() => router.push("/resetPassword")}
-                className="text-text-white text-center"
-              >
-                Confirm Token
-              </Text>
-            </Pressable>
-          </View>
+          )}
         </View>
       </ScrollView>
+      <FlashMessage position={"top"} />
     </SafeAreaView>
   );
 };

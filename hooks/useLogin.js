@@ -22,7 +22,6 @@ const useLogin = () => {
       },
       body: JSON.stringify({
         email: email,
-
         password: password,
       }),
     });
