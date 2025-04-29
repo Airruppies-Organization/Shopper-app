@@ -70,7 +70,7 @@ const Summary = () => {
         <View className="px-6">
           <View className="flex flex-row w-full justify-between mb-3">
             <Text className="text-lg font-sregular">Total Amount:</Text>
-            <Text className="text-lg font-sbold">N {total}</Text>
+            <Text className="text-lg font-sbold">N {total.toFixed(2)}</Text>
           </View>
           <View className="flex flex-row w-full justify-between mb-3">
             <Text className="font-sregular">Status:</Text>

@@ -29,7 +29,7 @@ const Password = () => {
         confirm: "",
       });
 
-      router.push("/dashboard");
+      router.push("/paymentSettings/setPin?source=signup");
     }
   };
   return (

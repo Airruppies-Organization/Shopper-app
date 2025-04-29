@@ -2,6 +2,7 @@
   "expo": {
     "name": "Airruppies",
     "slug": "Airruppies",
+    "jsEngine": "hermes",
     "scheme": "airruppies",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -55,7 +56,7 @@
       ]
     ],
     "extra": {
-      "baseURL": "http://192.168.236.27:7000",
+      "baseURL": "http://192.168.46.27:7000",
       "googleApiKey": "AIzaSyDrVZmEgQWYmkZ9AVLTwy-gOfzp40LXsoU",
       "router": {
         "origin": false

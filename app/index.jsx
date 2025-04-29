@@ -6,7 +6,7 @@ import Logo from "../assets/icons/fullLogo.jsx";
 
 export default function App() {
   setTimeout(() => {
-    router.push("/home");
+    router.push("home/");
   }, 3500);
   return (
     <View className="flex items-center justify-center h-full overflow-auto bg-secondary bg-opacity-5">

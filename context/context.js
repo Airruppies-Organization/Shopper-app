@@ -41,6 +41,7 @@ export const ContextProvider = ({ children }) => {
   const [merch, setMerch] = useState([]);
   const [storeSrch, setStoreSrch] = useState("");
   const [emailVer, setEmailVer] = useState("");
+  const [currVirtAccount, setCurrVirtAccount] = useState(null);
 
   const router = useRouter();
   const { user } = useAuthContext();
@@ -444,6 +445,9 @@ export const ContextProvider = ({ children }) => {
   };
 
   const handleUpdateProfile = async () => {
+    let currentProfile = profile;
+    console.log(currentProfile);
+
     try {
       const fetcher = await fetch(`${baseURL}/api/profile`, {
         method: "PUT",
@@ -488,6 +492,83 @@ export const ContextProvider = ({ children }) => {
         position: "top",
         duration: 4000,
       });
+    }
+  };
+
+  const handleSetPin = async (pin) => {
+    try {
+      const response = await fetch(`${baseURL}/api/pin/set`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          pin: pin,
+        }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+      if (!response.ok) {
+        showMessage({
+          message: "Error",
+          description: `${result.error}`,
+          type: "danger",
+          icon: "auto",
+          position: "top",
+          duration: 4000,
+        });
+      }
+
+      showMessage({
+        message: "Success",
+        description: "PIN set successfully",
+        type: "success",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+
+      if (response.ok) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      showMessage({
+        message: "Error",
+        description: ("Error setting PIN:", error.message),
+        type: "danger",
+        icon: "auto",
+        position: "top",
+        duration: 4000,
+      });
+    }
+  };
+
+  const fundHandler = async () => {
+    try {
+      const request = await fetch(`${baseURL}/api/wallet/dynamic/create`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${user.token}`,
+        },
+
+        body: JSON.stringify({ amount: 1000 }),
+      });
+
+      const response = await request.json();
+
+      if (response.status === "success") {
+        // setCurrVirtAccount(response.data);
+        console.log("Virtual account created successfully:", response.data);
+      } else {
+        console.log("Error creating virtual account:", response.message);
+      }
+    } catch (error) {
+      console.error("Error occurred:", error.message);
     }
   };
 
@@ -537,6 +618,10 @@ export const ContextProvider = ({ children }) => {
         handleUpdateProfile,
         emailVer,
         setEmailVer,
+        handleSetPin,
+        currVirtAccount,
+        setCurrVirtAccount,
+        fundHandler,
       }}
     >
       {children}

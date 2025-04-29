@@ -10,10 +10,10 @@ import {
   Pressable,
 } from "react-native";
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { AppContext } from "../../context/context";
+import { AppContext } from "../../../context/context";
 import { useRouter } from "expo-router";
 
-const Verify = () => {
+const PinSetting = () => {
   const { session, setSession, payType } = useContext(AppContext);
   const inputRef = useRef(null);
   const keypad = [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "<"];
@@ -22,25 +22,20 @@ const Verify = () => {
 
   const PIN = "2468";
 
-  // useEffect(() => {
-  //   const check = () => {
-
-  //   };
-  //   check();
-  // }, [pin]);
-
-  const handleVerify = () => {
-    if (PIN === pin) {
-      setPin("");
-      payType("Wallet");
-    }
-  };
-
   const handleClick = (num) => {
     if (num === "<") {
       setPin((prev) => prev.slice(0, -1));
     } else if (pin.length < 4 && num !== "") {
       setPin((prev) => prev + num);
+    }
+  };
+
+  const handleVerify = () => {
+    if (pin === PIN) {
+      router.push("paymentSettings/setPin?source=pinSetting");
+      console.log("PIN verified");
+    } else {
+      alert("Invalid PIN");
     }
   };
 
@@ -60,10 +55,12 @@ const Verify = () => {
 
   return (
     <View className="bg-primary h-full pt-20">
-      <Text className="font-sbold ml-4 text-2xl">Verify transaction</Text>
-      <View className="absolute bottom-0 pb-0 px-3">
+      <Text className="font-sbold text-2xl px-3">Verify Payment PIN</Text>
+      <Text className="text-xs px-3">Enter your previous payment PIN.</Text>
+      <View className="absolute bottom-0 pb-5 px-3">
         <View className="w-full flex items-center">
-          <Text className="text-lg">Enter your PIN</Text>
+          <Text className="text-lg ">Enter your current PIN</Text>
+
           <TextInput
             ref={inputRef}
             onFocus={() => Keyboard.dismiss()}
@@ -80,7 +77,7 @@ const Verify = () => {
             onPress={handleVerify}
             className="bg-secondary w-full h-12 rounded-md flex items-center justify-center"
           >
-            <Text className="text-text-white">Submit</Text>
+            <Text className="text-text-white">Verify</Text>
           </Pressable>
           <Pressable className="flex flex-row justify-end mt-2 px-4">
             <Text className="text-secondary">Forgot PIN?</Text>
@@ -95,8 +92,6 @@ const Verify = () => {
           contentContainerStyle={styles.flatListContent}
           columnWrapperStyle={styles.columnWrapper}
         />
-
-        {/* <Button title="Summary page" onPress={() => router.push("summary")} /> */}
       </View>
     </View>
   );
@@ -119,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Verify;
+export default PinSetting;

@@ -2,10 +2,14 @@ import { View, Text, Pressable } from "react-native";
 import Pattern from "../assets/icons/pattern";
 import Add from "../assets/icons/add";
 import React from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/context";
 import { useRouter } from "expo-router";
 
 const WalletCard = () => {
-  const router = useRouter();
+  const { currVirtAccount, setCurrVirtAccount, fundHandler } =
+    useContext(AppContext);
+
   return (
     <View className="relative w-full h-36 rounded-lg bg-[#61088E] mt-3">
       <View className="absolute w-full h-full ">
@@ -20,7 +24,8 @@ const WalletCard = () => {
         </View>
 
         <Pressable
-          onPress={() => router.push("fundWallet")}
+          // onPress={() => router.push("fundWallet")}
+          onPress={fundHandler}
           className="flex h-full justify-end items-center"
         >
           <View
