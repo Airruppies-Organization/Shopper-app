@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import WalletCard from "../../pageComponents/walletCard";
+import Banner from "../../pageComponents/banner";
 import Header from "../../pageComponents/header";
 
 const FundWallet = () => {
@@ -9,7 +9,7 @@ const FundWallet = () => {
       <View className="px-4">
         <Header />
         <Text>Fund Your Wallet</Text>
-        <WalletCard />
+        <Banner />
         <View className="mt-5">
           <Text className="text-sm text-center">
             To fund your wallet please transfer to this account

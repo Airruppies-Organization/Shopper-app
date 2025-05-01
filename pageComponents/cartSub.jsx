@@ -8,7 +8,7 @@ const CartSub = () => {
     <View className="flex flex-row w-full justify-between items-center">
       <TouchableHighlight
         underlayColor={"#3D0659"}
-        onPress={() => router.push("(screen)/upSlider")}
+        onPress={() => router.push("(screen)/paymentMethod")}
         className="px-5 py-2 rounded-lg bg-[#61088E] "
       >
         <Text className="text-sm text-text-white font-semibold">Checkout</Text>

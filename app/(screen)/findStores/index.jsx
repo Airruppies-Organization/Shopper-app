@@ -26,7 +26,7 @@ const FindStores = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView className="bg-primary">
       <View className="h-full pt-16 relative bg-primary">
         <View className="px-5 pt-10">
           <Text className="text-3xl mb-5">Find stores</Text>
@@ -38,30 +38,34 @@ const FindStores = () => {
                 return (
                   <View
                     key={index}
-                    className="border-b pb-2 border-b-black w-full flex flex-row items-end justify-between relative"
+                    className="border-b-[0.5px] border-b-[#858585] pb-2  w-full flex flex-row items-end justify-between relative"
                   >
-                    <View className="relative aspect-square h-16">
+                    <View className="relative aspect-square h-12">
                       <Image
                         source={{
                           uri: item.logo,
                         }}
                         style={{ width: "100%", height: "100%" }}
-                        resizeMode="cover"
+                        resizeMode="contain"
                         alt={item.name}
                       />
                     </View>
 
                     <View className="w-[60%] flex-grow flex-shrink flex mx-2">
-                      <Text className="text-lg font-semibold">{item.name}</Text>
-                      <Text className="text-xs">{item.address}</Text>
+                      <Text className="text-sm font-sbold uppercase w-full text-[#767676]">
+                        {item.name}
+                      </Text>
+                      <Text className="text-[10px] text-[#767676]">
+                        {item.address}
+                      </Text>
                     </View>
 
                     <TouchableHighlight
-                      className="h-10 w-20 flex items-center justify-center rounded-lg bg-secondary"
-                      underlayColor={"#3D0659"}
+                      underlayColor={"#DE9CFF"}
                       onPress={() => currMerchHandler(item)}
+                      className="bg-[#FFEDFF] rounded-md px-2 py-2 flex items-center justify-center my-auto"
                     >
-                      <Text className="text-text-white text-xs">
+                      <Text className="text-secondary text-xs">
                         Enter store
                       </Text>
                     </TouchableHighlight>

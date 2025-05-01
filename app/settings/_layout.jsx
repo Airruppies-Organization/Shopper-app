@@ -5,9 +5,11 @@ import { Stack } from "expo-router";
 const ScreenLayout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="paymentMethod" />
-      <Stack.Screen name="verify" />
-      <Stack.Screen name="summary" />
+      <Stack.Screen name="profileSettings" />
+      <Stack.Screen name="cardSettings/index" />
+      <Stack.Screen name="security" />
+      <Stack.Screen name="contactUs" />
+      <Stack.Screen name="updateKYC" />
       {/* <Stack.Screen name="orders/[order_id].jsx/index" /> */}
     </Stack>
   );

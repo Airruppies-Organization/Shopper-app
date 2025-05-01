@@ -17,9 +17,9 @@ const Header = () => {
         />
       </View>
       <View className="flex flex-row">
-        <View className="h-8 w-8 mr-3 flex items-center justify-center bg-[#f3f3f3] rounded-full">
+        {/* <View className="h-8 w-8 mr-3 flex items-center justify-center bg-[#f3f3f3] rounded-full">
           <Profile height={20} width={18} />
-        </View>
+        </View> */}
         <View className="h-8 w-8 flex items-center justify-center bg-[#f3f3f3] rounded-full">
           <Notification height={20} width={18} />
         </View>

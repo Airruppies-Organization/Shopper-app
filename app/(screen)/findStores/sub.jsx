@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import React from "react";
 import Search from "../../../assets/icons/search";
 import { useContext } from "react";
@@ -22,28 +22,28 @@ const Sub = () => {
 
   return (
     <View>
-      <View className="border-2 border-[#969696] w-full flex flex-row space-x-2 items-center h-10 rounded-lg ">
-        <View className="flex-grow h-full">
+      <View className="border border-[#969696] w-full flex flex-row space-x-2 items-center h-10 rounded-md ">
+        <View className="flex-grow">
           <TextInput
             value={storeSrch}
             onChangeText={searchHandler}
             onSubmitEditing={handleSearchStore}
             returnKeyType="search"
             placeholder="Find stores..."
-            className="flex-grow text-base h-full"
+            className="flex-grow text-sm h-full py-0 px-2 text-[#767676]"
           />
         </View>
 
-        <View
+        <Pressable
           onPress={handleSearchStore}
-          className="bg-secondary h-full aspect-square rounded-r-lg flex items-center justify-center"
+          className="bg-secondary h-full aspect-square rounded-r-sm flex items-center justify-center"
         >
           <Search
             width={25}
             height={25}
             className="stroke-primary fill-primary"
           />
-        </View>
+        </Pressable>
       </View>
     </View>
   );

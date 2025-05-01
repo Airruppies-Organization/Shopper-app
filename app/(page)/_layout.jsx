@@ -33,7 +33,11 @@ const PageLayout = () => {
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <View className="p-2 bg-[#F1F1F1] rounded-full">
+              <View
+                className={`p-2 ${
+                  focused ? "bg-[#FFEDFF]" : "bg-[#F1F1F1]"
+                } rounded-full`}
+              >
                 <Home
                   height={20}
                   width={20}
@@ -57,7 +61,11 @@ const PageLayout = () => {
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <View className="p-2 bg-[#F1F1F1] rounded-full">
+              <View
+                className={`p-2 ${
+                  focused ? "bg-[#FFEDFF]" : "bg-[#F1F1F1]"
+                } rounded-full`}
+              >
                 <ScanIcon
                   height={20}
                   width={20}
@@ -81,7 +89,11 @@ const PageLayout = () => {
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <View className="p-2 bg-[#F1F1F1] rounded-full relative">
+              <View
+                className={`p-2 ${
+                  focused ? "bg-[#FFEDFF]" : "bg-[#F1F1F1]"
+                } rounded-full relative`}
+              >
                 <CartIcon
                   height={20}
                   width={20}
@@ -112,7 +124,11 @@ const PageLayout = () => {
           options={{
             headerShown: false,
             tabBarIcon: ({ focused, color, size }) => (
-              <View className="p-2 bg-[#F1F1F1] rounded-full">
+              <View
+                className={`p-2 ${
+                  focused ? "bg-[#FFEDFF]" : "bg-[#F1F1F1]"
+                } rounded-full`}
+              >
                 <SettingsIcon
                   height={20}
                   width={20}

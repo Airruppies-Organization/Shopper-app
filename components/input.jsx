@@ -12,10 +12,10 @@ const Input = ({ label, handleChange, value, type }) => {
   };
 
   return (
-    <View className="mb-8">
-      <Text className="font-sregular">{label}</Text>
+    <View className="mb-8 w-full">
+      <Text className="font-sregular mb-1 text-[#4b4b4b]">{label}</Text>
 
-      <View className="w-full h-14 px-4 border-[0.5px] focus:border-2 border-black focus:border-secondary rounded-xl items-center flex flex-row">
+      <View className="w-full h-14 px-4 border border-[#d8d8d8] focus:border-secondary rounded-md items-center flex flex-row">
         <TextInput
           className="flex text-black text-base w-full h-full flex-grow flex-shrink"
           value={value}
